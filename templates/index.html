@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Plagiarism Checker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <header class="bg-primary text-white py-4 mb-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="mb-0"><i class="fas fa-search me-2"></i>Advanced Plagiarism Checker</h1>
+                        <p class="mb-0 mt-1">Professional-grade plagiarism detection using advanced algorithms</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="badge bg-light text-primary fs-6">
+                            <i class="fas fa-shield-alt me-1"></i>Secure & Private
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Main Content -->
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Upload Section -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Document</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="upload-area" id="uploadArea">
+                                <div class="upload-content">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                    <h6>Drag & Drop Your Document Here</h6>
+                                    <p class="text-muted">or click to browse files</p>
+                                    <small class="text-muted">Supported formats: TXT, PDF, DOCX (Max: 50MB)</small>
+                                </div>
+                                <input type="file" id="fileInput" accept=".txt,.pdf,.docx" hidden>
+                            </div>
+                            <div id="fileInfo" class="mt-3" style="display: none;">
+                                <div class="alert alert-info">
+                                    <h6 class="mb-2"><i class="fas fa-file me-2"></i>File Information</h6>
+                                    <div id="fileDetails"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OR Separator -->
+                    <div class="text-center mb-4">
+                        <span class="badge bg-secondary px-3 py-2">OR</span>
+                    </div>
+
+                    <!-- Text Input Section -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Paste Text Directly</h5>
+                        </div>
+                        <div class="card-body">
+                            <textarea id="textInput" class="form-control" rows="8" 
+                                placeholder="Paste your text here for plagiarism analysis... (minimum 50 characters)"></textarea>
+                            <div class="d-flex justify-content-between mt-2">
+                                <small class="text-muted">
+                                    Characters: <span id="charCount">0</span> | Words: <span id="wordCount">0</span>
+                                </small>
+                                <small class="text-muted">Minimum 50 characters required</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="text-center mb-4">
+                        <button id="checkPlagiarismBtn" class="btn btn-primary btn-lg px-5" disabled>
+                            <i class="fas fa-search me-2"></i>Check for Plagiarism
+                        </button>
+                        <button id="clearBtn" class="btn btn-outline-secondary btn-lg ms-2">
+                            <i class="fas fa-trash me-2"></i>Clear
+                        </button>
+                    </div>
+
+                    <!-- Progress Section -->
+                    <div id="progressSection" class="card shadow-sm mb-4" style="display: none;">
+                        <div class="card-body text-center">
+                            <div class="spinner-border text-primary me-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span id="progressText">Analyzing document for plagiarism...</span>
+                            <div class="progress mt-3">
+                                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="resultsSection" class="card shadow-sm" style="display: none;">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Plagiarism Analysis Results</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Results will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Error Section -->
+                    <div id="errorSection" class="alert alert-danger" style="display: none;">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Error</h6>
+                        <p id="errorMessage" class="mb-0"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-globe fa-2x text-primary mb-3"></i>
+                            <h6>Web-Based Detection</h6>
+                            <p class="text-muted small">Searches across millions of online sources for content matches</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-brain fa-2x text-primary mb-3"></i>
+                            <h6>Advanced Algorithms</h6>
+                            <p class="text-muted small">Uses machine learning and NLP for accurate similarity detection</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-file-alt fa-2x text-primary mb-3"></i>
+                            <h6>Multiple Formats</h6>
+                            <p class="text-muted small">Supports TXT, PDF, and DOCX files with text extraction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trusted Platforms Section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card bg-light">
+                        <div class="card-body text-center py-4">
+                            <h6 class="mb-4 text-muted">Professional-Grade Detection Like Popular Platforms</h6>
+                            <div class="row align-items-center">
+                                <div class="col-6 col-md-2 mb-3 mb-md-0">
+                                    <div class="platform-icon-wrapper">
+                                        <i class="fab fa-github fa-2x text-dark mb-2"></i>
+                                        <div class="small text-muted">GitHub</div>
+                                        <div class="small">Code Repository</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2 mb-3 mb-md-0">
+                                    <div class="platform-icon-wrapper">
+                                        <i class="fas fa-graduation-cap fa-2x text-info mb-2"></i>
+                                        <div class="small text-muted">Turnitin</div>
+                                        <div class="small">Academic Integrity</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2 mb-3 mb-md-0">
+                                    <div class="platform-icon-wrapper">
+                                        <i class="fas fa-spell-check fa-2x text-success mb-2"></i>
+                                        <div class="small text-muted">Grammarly</div>
+                                        <div class="small">Writing Assistant</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2 mb-3 mb-md-0">
+                                    <div class="platform-icon-wrapper">
+                                        <i class="fas fa-copy fa-2x text-warning mb-2"></i>
+                                        <div class="small text-muted">Copyscape</div>
+                                        <div class="small">Content Protection</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2 mb-3 mb-md-0">
+                                    <div class="platform-icon-wrapper">
+                                        <i class="fas fa-shield-alt fa-2x text-danger mb-2"></i>
+                                        <div class="small text-muted">Plagiarism</div>
+                                        <div class="small">Detection Pro</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <div class="platform-icon-wrapper">
+                                        <i class="fas fa-code-branch fa-2x text-secondary mb-2"></i>
+                                        <div class="small text-muted">Open Source</div>
+                                        <div class="small">Powered</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-lock me-1"></i>
+                                    Secure, Private & Free - No Registration Required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">&copy; 2025 Advanced Plagiarism Checker. Built with Flask & Advanced AI.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

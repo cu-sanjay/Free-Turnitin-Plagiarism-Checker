@@ -1,0 +1,291 @@
+/* Custom CSS for Plagiarism Checker */
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Upload Area Styling */
+.upload-area {
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    background-color: #f8f9ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #0056b3;
+    background-color: #e7f1ff;
+}
+
+.upload-area.dragover {
+    border-color: #28a745;
+    background-color: #e8f5e8;
+}
+
+.upload-content i {
+    color: #007bff;
+}
+
+/* Results Styling */
+.plagiarism-score {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.score-low {
+    color: #28a745;
+}
+
+.score-medium {
+    color: #ffc107;
+}
+
+.score-high {
+    color: #fd7e14;
+}
+
+.score-critical {
+    color: #dc3545;
+}
+
+.match-card {
+    border-left: 4px solid #007bff;
+    margin-bottom: 15px;
+}
+
+.similarity-badge {
+    font-size: 0.8rem;
+}
+
+.matched-text {
+    background-color: #fff3cd;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #ffc107;
+    margin: 10px 0;
+    font-style: italic;
+}
+
+/* Progress Bar Animation */
+.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+/* Text highlighting */
+.highlight-plagiarized {
+    background-color: #ffebee;
+    border-bottom: 2px solid #f44336;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Source cards */
+.source-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.source-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.source-title {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.source-title:hover {
+    text-decoration: underline;
+}
+
+/* Statistics cards */
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 15px 10px;
+    text-align: center;
+    margin-bottom: 15px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: block;
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+/* Results layout improvements */
+.results-stats-row {
+    margin-bottom: 25px;
+}
+
+.plagiarism-score-container {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Progress bar improvements */
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress-percentage {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.progress-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #856404;
+}
+
+.progress-warning i {
+    margin-right: 8px;
+}
+
+/* Loading animations */
+.loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .upload-area {
+        padding: 20px;
+    }
+    
+    .plagiarism-score {
+        font-size: 2rem;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+}
+
+/* Card animations */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Button improvements */
+.btn {
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Alert improvements */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Header improvements */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Platform icons styling */
+.platform-icon-wrapper {
+    padding: 15px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.platform-icon-wrapper:hover {
+    transform: translateY(-5px);
+}
+
+.platform-icon-wrapper:hover i {
+    transform: scale(1.1);
+}
+
+.platform-icon-wrapper i {
+    transition: transform 0.3s ease;
+}
+
+/* Additional platform colors */
+.text-github { color: #333 !important; }
+.text-turnitin { color: #0066cc !important; }
+.text-grammarly { color: #15c39a !important; }
+.text-copyscape { color: #ff6b35 !important; }
+
+/* Enhanced trusted platforms section */
+.card.bg-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

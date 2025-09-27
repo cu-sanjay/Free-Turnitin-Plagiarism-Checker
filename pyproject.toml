@@ -1,0 +1,16 @@
+[project]
+name = "turnitin-free"
+version = "2.1.0"
+description = "A lightweight, user-friendly plagiarism checker for those who may not have access to Turnitin."
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.13.5",
+    "flask>=3.1.2",
+    "nltk>=3.9.1",
+    "pypdf2>=3.0.1",
+    "python-docx>=1.2.0",
+    "requests>=2.32.5",
+    "scikit-learn>=1.7.2",
+    "selenium>=4.35.0",
+    "webdriver-manager>=4.0.2",
+]
