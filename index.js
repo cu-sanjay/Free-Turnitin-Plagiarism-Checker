@@ -15,8 +15,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public'));
 
-// Configure multer for file uploads (use /tmp in serverless)
-const uploadDir = process.env.VERCEL ? '/tmp/uploads' : './uploads';
+// Configure multer for file uploads
+const uploadDir = './uploads';
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -168,10 +168,8 @@ app.use((error, req, res, next) => {
 });
 
 // Start server
-if (!process.env.VERCEL) {
-    app.listen(port, '0.0.0.0', () => {
-        console.log(`Plagiarism Checker server running on port ${port}`);
-    });
-}
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Plagiarism Checker server running on port ${port}`);
+});
 
 module.exports = app;

@@ -32,3 +32,6 @@ Thumbs.db
 *.o
 *.so
 *.out
+
+uploads/
+!uploads/.gitkeep
