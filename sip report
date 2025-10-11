@@ -1,0 +1,1670 @@
+Title: “Market Research and Data-Driven Insights”
+
+Summer Internship Project Report submitted in partial fulfillment of the
+requirements for the degree of
+
+Master of Business Administration
+
+By
+Rakshit Nautiyal
+0241MBA053
+
+Under the guidance of
+DR. HARPREET SINGH GREWAL
+
+
+
+
+
+
+
+DBS Global University,Dehradun
+July,2025
+
+I
+
+Title:“Market Research and Data-Driven Insights”.
+
+Summer Internship Project Report submitted in partial fulfillment of the
+requirements for the degree of
+
+Master of Business Administration
+
+By
+Rakshit Nautiyal
+0241MBA053
+
+Under the guidance of
+DR. HARPREET SINGH  GREWAL
+
+
+
+
+
+
+DBS Global University,Dehradun
+July,2025
+
+
+
+
+Declaration
+
+I declare that the Summer Internship Project report titled Market Research for MDRA: “Market Research and Data-Driven Insights a Secondary Source Approach”. was prepared by me as part of my Master of Business Administration degree. I completed this project under the guidance of Dr. Harpreet Singh Grewal. I also confirm that I haven’t submitted this report for any other degree, diploma, fellowship, or similar credential at DBS Global University or any other university.
+
+
+
+
+Place: Dehradun	Rakshit Nautiyal
+
+Date:		0241MBA053
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                             II
+
+Certificate
+
+This is to confirm that Rakshit Nautiyal’s Summer Internship Project report titled : “Market Research and Data-Driven Insights” reflects the work he completed during his internship in the 2024-26 academic year. I supervised and guided him throughout this project, which was part of his requirements to earn his Master of Business Administration degree at DBS Global University.
+
+Place: Dehradun                                                               ___________________
+Date:	
+                                                                                      Dr. Harpreet Singh Grewal
+
+	          Professor 
+
+
+                                                                              DBS Global University, Dehradun
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                              III
+Acknowledgement
+
+I want to sincerely thank Dr. Harpreet Singh Grewal for all the guidance, helpful feedback, and ongoing support during this project. I also appreciate the faculty and staff at DBS Global University for providing the resources and an environment that made research easier. I’am grateful to my friends and colleagues for their encouragement and helpful chats. Lastly, I can’t thank my family enough for their constant support and motivation, which really helped me complete this project successfully.
+
+
+
+
+
+
+
+
+
+
+
+
+Rakshit Nautiyal
+
+0241MBA053
+
+
+
+
+                                      IV
+    
+LIST OF CONTENT
+
+Sr. No.	Particulars 	Page No.
+1.	Title	I
+2.	Declaration	II
+3.	Certificate	III
+4	Acknowledgement	IV
+5	Executive Summary	1-2
+6	Learnings From SIP	2-3
+7	Chapter-I Introduction	4
+8.	Chapter-II Industry Analysis	5-6
+9.	Chapter-III Company Profile	7-9
+10.	Chapter-IV Project/s Outline	10-13
+11.	Chapter-V Project wise Analysis	14-16
+12.	Chapter-VI Summary of Project analysis and findings	17-18
+13.	Projects Outline	18-20
+14.	Reflections & Key Learnings	21-22
+15.	References	23
+16.	Detailed Weekly Internship Summary 
+(Weeks 1–8)	24-27
+17.	Appendix Questionaire	28
+18.	Plagiarism report	29
+		
+
+                                                                            1
+EXECUTIVE SUMMARY
+The Summer Internship Project (SIP) focused on conducting market research for the ranking of top B-Schools in India, with the objective of compiling, cleaning, validating, and organizing institutional data to support the 2025 rankings publication. The project involved systematic secondary research, outreach to institutions, and structured data management over an eight-week period.
+In the initial phase, data was compiled from over 100 institutions based on previous year’s rankings. Information was manually gathered from emails, brochures, and official websites, and entered into pre-formatted Excel templates, forming the foundation of the database.
+The second phase emphasized data cleaning and standardization. Duplicates and outliers were removed, fields such as fee structures, accreditations, and course names were standardized, and Excel formulas were used to ensure consistency. This created a reliable dataset for further evaluation.
+Subsequent weeks focused on data enrichment and validation. Missing inputs were filled by directly contacting institutions, supplementing responses with verified public data such as infrastructure details, faculty size, and international collaborations. Independent verification improved the accuracy and credibility of the dataset.
+Where institutions were unresponsive, follow-ups via calls and emails were conducted, recovering critical information on programs, placements, and batch strength. Fresh responses from over 30 institutions significantly improved the dataset’s completeness and recency.
+The final stage of the internship involved structuring the validated data in alignment with the ranking methodology. Institutions were categorized, individual profiles were prepared, and index sheets were created for seamless navigation. The dataset was formatted with filters, color codes, and explanatory notes, ensuring usability for both editorial and analytics teams.
+By the conclusion of the internship, a comprehensive and credible dataset was delivered, serving as a direct input for the 2025 B-School Rankings. Additionally, an executive summary of patterns and insights was prepared for senior editors, highlighting trends and data completeness across institutions.
+This project enhanced skills in secondary research, data validation, Excel-based data management, institutional communication, and market analysis. It provided valuable 
+                                                                                      2
+exposure to the processes involved in preparing credible, large-scale educational rankings, contributing to both academic learning and practical research experience.
+
+
+LEARNING FROM SIP
+
+During the course of my Summer Internship Project, I gained extensive exposure to market research processes, institutional communication, and data management practices while contributing to the preparation of B-School rankings in India. The experience provided me with both technical and interpersonal learnings that are highly relevant to academic research and corporate projects.
+One of the key learnings was developing professional communication skills while reaching out to institutions. I learned how to draft clear, concise, and respectful messages through emails and calls, manage responses, and conduct polite follow-ups. This enhanced my interpersonal and stakeholder management skills in an academic data setting.
+I strengthened my ability to collect, review, and verify real-time data from multiple sources such as institutional websites, brochures, emails, and accreditation databases. I learned how to differentiate between credible information and promotional content, cross-check institutional claims, and maintain structured logs to cite sources and validate secondary data.
+From a technical perspective, I developed proficiency in Excel-based data handling. This included manual recording of raw information, data cleaning techniques using functions like =TRIM(), =CLEAN(), and =PROPER(), handling missing values, removing duplicates, and ensuring standardized entries. I also practiced creating pivot tables, charts, and graphs to visualize trends and summarize large datasets, which improved my ability to translate raw data into actionable insights.
+I also learned how to organize and categorize data meaningfully, segmenting institutions by zone, type, and specialization. I practiced incorporating new evaluation parameters into datasets for a more holistic assessment. These practices improved my attention to detail, accuracy, and ability to identify patterns such as ROI trends and accreditation distribution across institutions.
+
+                                                                                   3
+The project taught me persistence in data recovery and follow-ups, especially when institutions were unresponsive. I learned to creatively use alternative sources like archived reports and public databases while balancing deadlines by prioritizing essential information.
+Finally, I gained experience in structured reporting and presentation. I learned how to prepare professional Excel-based databases with filters, legends, and notes for clarity, and how to create executive summaries that highlighted key findings. By presenting final deliverables to senior editors, I understood the role of interns in the publication cycle of reputed media houses, linking academic research with real-world outcomes.
+Overall, this internship significantly enhanced my research, analytical, communication, and reporting skills, while giving me valuable exposure to the challenges and processes involved in large-scale educational rankings.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                 4
+CHAPTER-I
+INTRODUCTION
+
+The Summer Internship Project (SIP) was undertaken with the objective of contributing to the preparation of institutional rankings by developing a structured and reliable data repository. The central emphasis of the internship lay in the collection, validation, standardization, and organization of institutional data, thereby generating insights that would support the evaluation and ranking process.
+
+The work commenced with the compilation of data from universities and business schools identified on the basis of the previous year’s listings. Information was manually collected from official websites, brochures, and institutional communications and subsequently entered into pre-formatted Excel templates. This exercise resulted in the creation of an initial database encompassing more than one hundred institutions with essential ranking parameters.
+
+To enhance the integrity of the dataset, systematic data cleaning and standardization were undertaken. Duplicates and outliers were removed, and uniformity was established in fields such as fee structures, program nomenclature, and accreditations. Excel formulas were employed to ensure consistent formatting across the dataset, thereby generating a refined and structured database suitable for subsequent editorial and analytical review.
+
+An important component of the process involved addressing data gaps through primary outreach. Follow-up emails and telephonic interactions facilitated the collection of updated details on academic programs, placements, and batch strength from over thirty institutions. This effort significantly improved the recency and completeness of the data repository. In parallel, supplementary information was gathered through a review of institutional websites and brochures, enabling the verification of infrastructure, faculty strength, international collaborations, and accreditations. Such cross-verification strengthened the credibility of the database by incorporating independently validated entries.
+
+For institutions that did not provide responses, data recovery efforts were pursued through telephonic follow-ups and secondary research, with a response log maintained for communication tracking. Subsequently, validated data was aligned with the established ranking methodology. Institutions were segregated by category, and individual profiles were prepared in Excel, supported by index sheets to facilitate navigation across datasets.
+
+The final stage involved formatting the consolidated dataset with filters, color codes, and explanatory footnotes, alongside the preparation of an executive summary highlighting data completeness and emerging patterns. The final deliverables were submitted to the editorial team, serving as critical inputs for the forthcoming 2025 institutional rankings publication.
+
+Overall, the internship experience provided significant academic exposure to the principles of data accuracy, standardization, and verification. It further underscored the pivotal role of data-driven insights in enhancing the transparency, reliability, and credibility of institutional rankings.                                                                                 5
+
+
+
+
+
+
+
+
+
+                     CHAPTER II
+           INDUSTRY ANALYSIS
+ Overview of Market Research 
+The industry provides insights for marketing, product, and policy decisions using surveys, panels, digital analytics, and AI-enabled methods.
+India is a fast-growing hub serving both domestic clients and global offshoring work, with strong associations shaping standards. 
+Market Size and Growth
+India size & trajectory: Indian Research & Insights industry estimated ~US$2.9B with ~17.5% growth in the latest cycle, and projected to reach ~US$3.4B in FY2025 (MRSI).
+Global context: The wider insights ecosystem reached ~US$142B in 2023 (research, software, reporting combined), underscoring strong tech-led expansion. 
+Key Players
+Multinationals:  NielsenIQ, GfK(Gesellschaft für Konsumforschung) now combined with NielsenIQ  globally, Kantar(Kantar Group Limited), Ipsos(Institut de Publique Sondage d’Opinion Secteu), YouGov(Your Government)—with India operations. 
+Indian leaders & specialists: Hansa Research and other members active in consumer panels, social listening, and custom research.
+Recent Trends
+Artificial Intelligence & automation: Rapid adoption of Artificial Intelligence for coding open-ends, predictive modeling, and insight summarization; research-software revenue is now a major slice of global insights turnover. 
+
+Digital data mix: Growth in online panels, app telemetry, e-commerce analytics, and social listening; faster turnaround for brand/innovation work.
+
+Privacy-by-design: New data-protection norms influencing consent, collection points, and data retention practices in India
+
+Immersive tools are transforming consumer research. Virtual reality (VR) and augmented reality (AR) now enable lifelike simulations for product testing, focus groups, and experience trials—such as virtual store visits or test-driving vehicles in digital environments.
+
+Research is no longer siloed; it now spans departments—ranging from marketing and product development to customer service—via centralized dashboards and collaborative workflow Moreover, omnichannel research captures data across social media, e-commerce platforms, physical stores, and more, providing a cohesive view of consumer behaviors across touchpoints.
+
+Challenges Faced by the Industry
+Data privacy & compliance: Adapting consent flows, children’s data safeguards, and cross-border transfers under India’s Digital Personal Data Protection Act.
+Sampling & quality: Fighting fraud/duplicates in online panels; ensuring representative coverage beyond metros. (Industry-wide issue noted in discussions.)
+Outbound outreach limits: Tighter rules on unsolicited commercial communication affect tele-surveys/SMS recruitment. 
+Government Initiatives & Regulatory Support
+Digital Personal Data Protection Act, 2023: Establishes consent, purpose limitation, user rights (access, correction, erasure), and “legitimate uses”; draft rules underway to operationalize the law.
+Telecom Regulatory Authority of India – Unsolicited Commercial Communication framework: Strengthens controls on spam calls/SMS and mandates registries and headers—relevant for research outreach protocols. 
+Ongoing clarifications: Sector conversations on consent granularity and operational practicality (e.g., payments ecosystem) signal an evolving compliance landscape.
+Future Outlook
+Sustained double-digit growth expected as India scales insight offshoring, digital commerce measurement, and Artificial intelligence-assisted analytics; domestic demand from Fast-Moving Consumer Goods, retail, Banking, Financial Services, and Insurance, and education remains strong.Convergence of Market research + analytics + software: Tooling and automation will keep expanding share within the insights value chain.
+Privacy-centric operations: Firms that embed compliant consent, secure collection (no public disclosure of identifiers), and transparent data logs will gain trust and access. 
+
+
+SWOT Analysis of the Market Research Industry
+Strengths
+Critical Role in Decision-Making: Provides organizations with actionable insights into consumer behavior, market dynamics, and competitive landscapes, making it indispensable for strategic planning.
+Methodological Diversity: Combines both quantitative and qualitative research approaches, enabling a holistic understanding of markets.
+Sectoral Versatility: Applicable across industries such as consumer goods, healthcare, education, technology, finance, and government, ensuring wide demand.
+Growing Global Demand: Rising business complexity and globalization increase the reliance on evidence-based decision-making.
+Innovation in Research Tools: Use of online panels, immersive technologies (virtual reality and augmented reality), and mobile-first methods enhances reach and engagement.
+Professional Standardization: Existence of industry bodies and codes of ethics improves research reliability and credibility.
+
+Weaknesses
+Data Quality Challenges: Risk of inaccurate, incomplete, or biased data, especially when relying on self-reported information.
+High Cost and Resource Intensity: Customized studies and advanced methodologies can be expensive, limiting accessibility for smaller firms.
+Dependence on Respondent Participation: Declining survey response rates and respondent fatigue reduce representativeness.
+Time-Consuming Processes: In-depth research, especially qualitative studies, often requires long timelines, which can conflict with businesses’ need for real-time insights.
+Fragmented Industry Structure: The presence of many small and mid-sized players creates inconsistency in methodological rigor and reliability.
+
+Opportunities
+Expansion in Emerging Markets: Increasing demand for consumer insights in rapidly developing economies provides new growth avenues.
+Integration of Advanced Analytics: Predictive analytics, data visualization, and real-time dashboards create deeper, faster insights.
+Sector-Specific Research Growth: High-potential areas such as healthcare, sustainability, fintech, and e-commerce present new opportunities.
+Cross-Functional Applications: Research insights are increasingly valued not only in marketing but also in product development, customer service, and policy-making.
+Globalization of Consumer Trends: Multinational companies require localized as well as global insights, fueling demand for comparative and cross-country research.
+Partnerships with Media and Government: Rising use of research in electoral studies, public policy, and social impact assessments expands scope.
+
+Threats
+Data Privacy Concerns: Growing regulations around data protection (e.g., stricter consumer consent laws) may limit research practices.
+Technological Disruptions: Rapidly evolving digital ecosystems require constant methodological adaptation; firms that lag risk obsolescence.
+Competition and Price Pressure: Global giants and local boutique firms compete intensely, often leading to downward pricing pressures.
+Risk of Misinterpretation: Poorly designed studies or biased reporting can mislead decision-makers, damaging the credibility of research.
+Substitute Sources of Insights: Businesses increasingly use internal data (customer transactions, social media analytics) as substitutes for external research services.
+Global Economic Uncertainty: Market downturns can lead to reduced research budgets as organizations cut non-essential expenditures.
+
+
+
+
+                        CHAPTER-III
+COMPANY PROFILE- Marketing and development Research Associates
+Introduction to the Company 
+Marketing & Development Research Associates (MDRA), established in the early 1990s (around 1993–1994), is a premier marketing research and consulting organization headquartered in New Delhi, India. The firm specializes in both quantitative and qualitative research, delivering strategic business planning solutions that are firmly grounded in data analysis and market insights. As a proud member of the Market Research Society of India (MRSI), MDRA has earned a strong reputation for integrating critical market data into strategic decision-making processes, thereby enabling organizations to make informed and impactful business choices.
+Vision, Mission, and Core Values 
+While MDRA does not publicly declare explicit vision and mission statements, its ethos 
+and values can be inferred: 
+Mission-like focus: 
+Our mission is to empower clients through deep market insights that inform strategic planning, enhance customer satisfaction, and strengthen competitive positioning. Guided by our core values of dedication to accuracy, methodological rigor, strategic impact, and client satisfaction, we uphold the highest research standards. These principles are consistently reflected in our work, particularly in high-profile ranking projects, where our commitment to excellence ensures reliability, relevance, and meaningful outcomes for our clients.
+Products and Services 
+MDRA delivers a comprehensive suite of market research and consultancy offerings, including: DEL (Defection and Leakage) Analysis Market Structure & Segment Analysis Advertisement & Brand Effectiveness Research Consumer Research Industry Rating & Performance Studies Customer Satisfaction, Retention & Loyalty Studies Customer Value Measurement Market Potential Assessment & Demand Estimation Market Strategy Formulation & Implementation Product & Pricing Studies Impact Assessment Studies Opinion Polls / Exit Polls / Election Analysis University, College, and B-School Rankings (notably in partnership with India Today) In addition, 
+                                                                                        8
+MDRA has engaged in diverse sectors such as automotive, consumer durables, infrastructure, energy (oil and natural gas), power, media & communication, retail, international trade, and government projects 15 Customer Segments Served MDRA caters to a varied clientele including: Corporate businesses seeking consumer and brand insights Educational institutions (via ranking studies) Government agencies and public sector units (through impact assessment and opinion polls) Media houses (e.g., India Today) and election commissions (for election analysis and public opinion data) Competitive Advantage MDRA’s strengths include: Dual expertise in quantitative and qualitative research, allowing for deep and actionable insights Specialization in educational rankings, including the prestigious India Today-MDRA college and B-school rankings, employing rigorous frameworks and multi-parameter methodologies A diverse sectoral portfolio, enhancing methodological robustness across industries Established reputation for strategic consulting and data-driven business planning
+Organizational Structure 
+MDRA operates as a compact, tightly-managed team based out of New Delhi: It reportedly employs between 17 to 35 staff members, including researchers, survey coordinators, and administrative personnel The organizational hierarchy appears to include an Executive Director, research analysts, survey programmers, research and marketing staff, and HR/Admin executives The team ethos emphasizes passion, innovation, professionalism, and mentorship within a continuous-learning culture.
+Problem Statement
+Marketing & Development Research Associates (MDRA) is entrusted with producing credible, large-scale rankings and market research studies across sectors, including the highly visible India Today–MDRA B-School Rankings. The accuracy and credibility of these rankings depend heavily on the quality, completeness, and timeliness of institutional data
+
+However, MDRA faces multiple challenges:
+Incomplete or delayed responses from institutions, requiring persistent follow-ups.
+Inconsistent data formats across websites, brochures, and official submissions, which complicates standardization.
+Verification difficulties, as institutions may overstate achievements in areas like placements, infrastructure, or accreditations.
+                                                                                    
+Time constraints to clean, validate, and structure large datasets before editorial deadlines
+Evolving parameters of rankings, which require continuous updating of data fields and methodologies.
+These issues create a gap between the demand for transparent, credible rankings and the fragmented, sometimes unreliable data ecosystem available in the higher education sector. MDRA’s challenge, therefore, is to develop robust processes for data collection, validation, and reporting that can withstand scrutiny and deliver trustworthy insights to stakeholders.
+SWOT Analysis of Marketing & Development Research Associates
+Strengths
+Established Reputation: Over three decades of experience in market research and consulting, with strong recognition in India.
+Specialization in Rankings: Trusted partner of India Today for college and B-School rankings, giving it credibility and visibility.
+Methodological Expertise: Dual strength in both quantitative and qualitative research, ensuring well-rounded insights.
+Diverse Service Portfolio: Wide range of services including customer research, brand effectiveness, demand estimation, election analysis, and impact assessments.
+Sectoral Diversity: Proven expertise across multiple sectors such as education, automotive, energy, retail, and public sector projects.
+Professional Team Culture: Compact team emphasizing professionalism, mentorship, and continuous learning.
+Membership in MRSI(Market Research Society of India): Enhances credibility by aligning with industry standards and best practices.
+
+
+
+Weaknesses
+Limited Workforce: Relatively small staff strength (17–35 employees) may restrict capacity for very large-scale projects compared to global competitors.
+Lack of Public Vision and Mission Statements: Absence of clearly articulated corporate philosophy may reduce brand positioning strength.
+Dependence on High-Profile Projects: Heavy reliance on rankings (especially with India Today) could make it vulnerable if partnerships change.
+Time-Intensive Processes: Manual data collection and verification can be resource-heavy and slow.
+Limited Global Presence: Primarily India-focused, with relatively less international visibility compared to global research firms.
+
+Opportunities
+Growing Demand for Credible Rankings: Increasing interest in higher education rankings and performance benchmarks enhances relevance.
+Expansion into Digital Data Tools: Adoption of automation, digital dashboards, and real-time analytics could improve efficiency.
+Rising Industry Demand: Growing reliance on market research across sectors such as consumer goods, retail, healthcare, and e-commerce.
+Government and Public Sector Projects: Expanding role in impact assessments, public opinion studies, and policy evaluation.
+Partnership Potential: Opportunities to collaborate with global firms or media houses for cross-country benchmarking studies.
+Sector Diversification: Possibility of entering fast-growing domains such as sustainability research, fintech, and digital consumer behavior.
+
+
+
+Threats
+Data Reliability Issues: Dependence on institutional self-reporting creates risks of inflated or incomplete information.
+High Competition: Faces competition from both global giants (Nielsen, Kantar, Ipsos) and emerging Indian research firms.
+Tight Deadlines: Editorial commitments (e.g., rankings) require fast turnaround, leaving little margin for delays or errors.
+Regulatory and Ethical Challenges: Increasing scrutiny on data privacy, transparency, and ethical standards in research.
+Client Expectations: Rising demand for real-time, tech-enabled insights could strain current manual processes if not upgraded.
+Reputation Risk: Any error in rankings or research credibility could damage trust among stakeholders.
+
+                                                               CHAPTER-IV
+                                            Research Methodology
+ Introduction
+This chapter outlines the research methodology adopted during the Summer Internship Project (SIP). The methodology was designed to ensure systematic data collection, cleaning, verification, and organization of information from universities and business schools. The overall approach combined both primary and secondary data collection techniques, followed by structured data processing and validation to produce an accurate and comprehensive dataset for institutional ranking purposes.
+
+Research Design
+The research followed a descriptive research design. The primary objective was to compile, verify, and structure institutional data in alignment with ranking parameters. The process involved identifying institutions, collecting relevant data, addressing data gaps, validating responses, and preparing the final dataset for editorial review and publication.
+Data Collection Methods
+ Primary Data Collection
+Primary data was collected directly from academic institutions through the following approaches:
+Email Communication: Institutions were contacted via official email channels to provide updated details on programs, batch strength, placement statistics, and accreditations.
+Telephonic Follow-ups: Direct calls were made to institutional representatives for clarification and recovery of missing data.
+Response Logs: All communication was systematically recorded to ensure transparency and track progress.
+Institutional Inputs: Fresh responses from over 30 institutions were manually documented into Excel templates, significantly improving data completeness.
+
+ Secondary Data Collection
+Secondary data sources were used to supplement and verify institutional responses. These included:
+Official Websites and Brochures: Data points such as infrastructure, faculty strength, international collaborations, and course details were extracted.
+
+Previous Year’s Listings: Institutions from earlier ranking cycles were identified to establish the base framework.
+Publicly Available Reports: Additional insights were cross-verified to strengthen data credibility and accuracy.
+
+ Data Processing and Cleaning
+Once the raw data was compiled, a systematic process of cleaning and validation was undertaken to ensure consistency and usability. The key steps included:
+Elimination of Duplicates and Outliers: Irrelevant and inconsistent entries were removed.
+Standardization of Fields: Common parameters such as fee structure, program nomenclature, and accreditation details were normalized to maintain uniformity.
+Excel-Based Formatting: Advanced formulas and functions were applied for automated error-checking, ensuring uniform formatting across datasets.
+Completeness Checks: Gaps in data were filled through direct follow-ups with institutions or by referencing reliable secondary sources.
+
+ Data Organization and Structuring
+The processed data was systematically organized to facilitate evaluation and ranking. The following measures were undertaken:
+
+Segregation of Institutions: Universities and business schools were categorized according to ranking criteria.
+Institutional Profiles: Comprehensive profiles were created in Excel, capturing all relevant ranking parameters.
+Index Sheets: Navigation tools such as index pages were developed to allow quick access to institutional datasets.
+Formatting and Documentation: Filters, color codes, and footnotes were applied for clarity and ease of use.
+
+ Tools and Techniques Used
+The research employed various tools and techniques for efficiency and accuracy:
+MS Excel: Data entry, cleaning, formatting, application of formulas, preparation of pivot tables, and structuring of institutional profiles.
+MS Word: Drafting notes, preparing institutional summaries, and documenting methodological details.
+Email Platforms (Outlook/Gmail): Institutional outreach, reminders, and communication tracking.
+Telephonic Communication: Real-time clarification and direct data recovery
+Web Browsers and PDF Documents: Secondary research from official sources.
+
+ Validation and Verification
+To ensure the reliability of the dataset, multiple levels of verification were implemented:
+Cross-Verification: Institutional responses were compared with publicly available data to confirm authenticity.
+Editorial Review Preparation: The dataset was prepared in a format suitable for evaluation by the editorial and analytics teams.
+Independent Validation: Where possible, data points such as accreditations and faculty size were confirmed using multiple independent sources.
+
+Final Output
+The final stage of the methodology focused on preparing deliverables for the ranking process:
+A structured, verified, and complete database covering 100+ institutions.
+Individual institutional profiles aligned with ranking parameters.
+An executive summary highlighting completeness, key patterns, and data coverage.
+Final submission of datasets to the editorial and analytics teams for use in the upcoming 2025 rankings publication.
+
+ Summary
+The research methodology combined a mix of primary and secondary data collection, supported by rigorous data cleaning, verification, and organization techniques. By integrating institutional responses with independently verified information, the methodology ensured both accuracy and credibility of the dataset. The structured approach not only improved the completeness of institutional profiles but also delivered a high-quality database, forming the backbone of the ranking process.
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                     10
+CHAPTER-V
+PROJECT ANALYSIS 
+
+This internship was conducted as part of the MBA curriculum and aimed to bridge the gap between academic learning and practical industry exposure
+ Duration and Location of the Internship
+·	Internship Duration: 2 months
+·	Start Date: 2 June, 2025
+·	End Date:  31 july, 2025
+·	Internship Location: Marketing and Development Research Associates, Delhi
+
+ Objectives of the Project
+  To compile, validate, and organize institutional data for the preparation of the 2025 B-School      Rankings.
+  To strengthen the credibility of rankings through cross-verification of institutional claims with secondary sources.
+  To improve data completeness and accuracy by coordinating with institutions via calls, emails, and follow-ups.
+  To deliver a structured dataset aligned with the ranking methodology, supporting editorial and analytics teams.
+  To gain practical exposure to market research methodologies and enhance skills in data management, analysis, and reporting.
+
+                                                                                  11
+ Scope of the Project
+The project covered over 100 business schools and universities across India, focusing on  multiple ranking parameters such as infrastructure, faculty strength, placements, accreditations, international collaborations, and ROI trends.
+Included both primary outreach (emails, calls, follow-ups) and secondary research (websites, brochures, accreditation databases).
+Scope was limited to data collection, cleaning, validation, and structuring; final ranking decisions rested with senior editorial and analytics teams.
+The project directly contributed to the India Today–MDRA 2025 Rankings publication.
+
+Conceptual Framework
+The project was based on the principle that accurate and credible data is the foundation of meaningful rankings. The framework combined:
+Data Collection → Gathering raw information from institutions and public sources.
+Data Validation → Cross-checking claims with independent databases and accreditation bodies.
+Data Structuring → Standardizing and categorizing data into ranking parameters.
+Data Reporting → Organizing datasets for editorial teams and preparing executive insights.
+This framework ensured that the research outcomes were methodologically sound, transparent, and credible.
+
+Research Methodology
+1. Research Design
+Approach: Combination of secondary research and institutional outreach (primary data).
+Design: Descriptive and analytical in nature, aimed at organizing educational institutions into a comparative ranking framework.
+Data Sources: Institutional websites, brochures, email responses, telephonic follow-ups, accreditation bodies, and independent public databases
+ Methodology Description
+Identification of Institutions: Selected based on previous year’s rankings and current academic reputation.
+
+                                                                         12
+Data Compilation: Collected raw data manually from websites, brochures, and direct communication.
+Data Cleaning: Removed duplicates, standardized entries (fees, course names, locations), and used Excel functions (=TRIM(), =CLEAN(), =PROPER()).
+Data Validation: Cross-verified information (placements, accreditations, collaborations) with secondary sources.
+Data Enrichment: Supplemented missing inputs through follow-ups and verified public data.
+Data Structuring: Segregated institutions by type, specialization, and geography; created profiles and index sheets.
+Final Deliverables: Prepared structured Excel datasets with filters, legends, and notes; created executive summaries highlighting trends.
+
+ Detailed Work Responsibilities
+My work primarily involved compiling and recording institutional data from emails, brochures, and official websites, followed by cleaning, standardizing, and formatting large datasets in Excel. I actively reached out to institutions through emails, calls, and follow-ups to gather missing information and ensured accuracy by cross-verifying institutional claims with accreditation databases and independent reports. Additionally, I categorized institutions and prepared individual profiles aligned with ranking parameters, while also developing executive summaries and briefs for senior editors and research leads. Finally, I contributed to the preparation of the comprehensive dataset for the 2025 rankings publication.
+
+  Tools, Platforms, and Channels Used
+extensively worked with MS Excel for data entry, cleaning, formatting, and creating pivot tables, charts, and summaries. Using MS Word, I drafted summaries, notes, and reports to support research documentation. For institutional outreach and follow-ups, I managed email communication through Outlook and Gmail, while also conducting telephonic calls for direct interaction with academic representatives. Additionally, I utilized web browsers and PDF documents to extract secondary data from official websites, brochures, and accreditation reports. To ensure consistency and alignment with ranking parameters, I also worked with internal pre-formatted Excel templates for indexing and data organization.
+
+                                                                                      13
+Departments and Teams Interacted With
+Research Team: Primary point of collaboration for data compilation, validation, and methodology alignment.
+Editorial Team: Coordinated for insights, summaries, and preparation of final content for publication.
+Institutional Representatives: Communicated with faculty coordinators, placement officers, and administrative staff for authentic information.
+Supervisors/Mentors: Reported progress, received feedback, and refined dataset structure for usability.
+
+
+
+
+
+
+
+
+
+
+
+                                  
+                                                                                   14
+
+CHAPTER-VI PROJECT WISE ANALYSIS
+ Phase 1:Project Planning and Orientation
+•	Understood the objective of the B-School Ranking Project and familiarized with MDRA’s methodology.
+•	Reviewed previous year’s datasets and ranking frameworks.
+•	Identified key parameters such as infrastructure, placements, accreditations, ROI, and international exposure.
+•	Prepared initial plan for data collection, validation, and communication strategy.
+Phase 2: Data Collection
+•	Conducted secondary research by visiting institutional websites, brochures, accreditation portals, and public reports.
+•	Engaged in primary data collection through outreach to institutions via emails and telephonic calls.
+•	Collected data related to academic programs, placement records, faculty profiles, infrastructure, and student outcomes.
+•	Created raw data sheets in MS Excel with institution-wise entries.
+Phase 3: Data Cleaning and Validation
+•	Standardized the collected data to ensure consistency in format (fees, course titles, location codes).
+•	Applied Excel functions like TRIM, CLEAN, VLOOKUP, and Pivot Tables to organize data.
+•	Cross-verified claims (placement figures, accreditations, collaborations) using independent sources and official records.
+•	Eliminated duplicate and inconsistent entries for a reliable dataset.
+
+                                                                                15
+
+
+Phase 4: Data Structuring and Categorization
+•	Segregated institutions based on type (government/private), region, specialization, and accreditations.
+•	Prepared institutional profiles including highlights of academic strengths and placement records.
+•	Structured the dataset in alignment with ranking parameters to simplify analysis for senior teams.
+•	Created index sheets and legends for easier navigation within the dataset.
+
+Phase 5: Institutional Interaction and Follow-Ups
+•	Directly interacted with placement officers, faculty coordinators, and administrative staff for authentic information.
+•	Sent structured queries via emails to clarify discrepancies.
+•	Followed up with institutions through calls to collect missing or incomplete data.
+•	Maintained communication logs for accountability and transparency.
+
+Phase 6: Report Preparation and Deliverables
+•	Compiled data into Excel dashboards with filtering and sorting features.
+•	Prepared executive summaries highlighting market trends, institutional performance, and emerging patterns.
+•	Contributed insights to the editorial team for the India Today–MDRA B-School Rankings.
+•	Submitted the final dataset to supervisors with annotations, notes, and references.
+
+Phase 7: Learning and Skill Development
+•	Acquired hands-on experience in market research and ranking methodology.
+                                                                      16
+•	Enhanced skills in data handling, MS Excel, secondary research, and communication.
+•	Gained exposure to the education sector’s dynamics, particularly in management education.
+•	Developed professional communication and consumer-handling skills while dealing with institutions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                  17
+CHAPTER-VII
+SUMMARY OF PROJECT ANALYSYS AND FINDINGS
+
+Introduction
+The Summer Internship Project focused on market research and data compilation for India Today–MDRA B-School Rankings 2025. The primary objective was to build a comprehensive, credible, and structured database of Indian B-Schools by collecting, cleaning, validating, and organizing data from both primary and secondary sources.
+The project scope covered 100+ institutions across India and involved multiple stages: data collection from official websites, brochures, and direct outreach; cleaning and standardizing datasets using Excel functions; verifying institutional claims through cross-checking with accreditation bodies and credible public data; and preparing structured profiles and summaries aligned with ranking parameters.
+The research methodology combined primary data (emails, telephonic follow-ups, and institutional responses) with secondary research (archived reports, PDFs, and websites). Tools such as MS Excel and MS Word were extensively used for data management, formatting, pivot tables, charting, and report writing. Communication channels included emails, calls, and professional correspondence, which enhanced interpersonal and stakeholder engagement skills.
+Throughout the project, significant challenges included incomplete institutional responses, inconsistent data formats, and time-bound validation requirements. These were addressed through persistent follow-ups, careful standardization, and structured reporting practices.
+The analysis revealed several key findings:
+•	Data Reliability Improves Through Verification: Many institutions overstated achievements in placements or infrastructure, which required independent validation.
+•	Sectoral Patterns Identified: Trends in ROI, accreditations, and geographical distribution of top B-Schools were observed.
+                                                                  18
+•	Standardization is Critical: Uniformity in data (e.g., fees, faculty count, locations) enhanced comparability and usability for rankings.
+•	Holistic Datasets Add Value: Incorporating additional parameters like international collaborations and infrastructure improved the ranking framework.
+•	Professional Communication is Essential: Effective outreach and polite follow-ups directly impacted data completeness and credibility.
+Ultimately, the project resulted in a well-structured, validated dataset that directly contributed to the 2025 B-School Rankings publication. It also provided hands-on exposure to real-world research processes, strengthened skills in data analytics and reporting, and demonstrated how structured research underpins credible rankings in the education sector.
+
+
+PROJECT OUTLINE
+Project Title
+Research and Data Compilation for India Today–MDRA B-School Rankings 2025.
+Intern Name
+Rakshit Nautiyal
+ MBA Student – DBS GLOBAL UNIVERSITY
+ ERP No: 0241MBA053.
+Internship Organization
+Marketing and development research associates (MDRA).
+ DEHRADUN D2
+ Internship Duration: 2 JUNE 2025 to 31 JULY 2025
+Project Guide
+Name: MR.Vaibhav Gupta
+Designation: Deputy Research Manager
+Organization:. Marketing and development research associates (MDRA).
+
+                                                                                     19
+College Guide
+Name: DR. HARPREET GREWAL
+Designation: PROFESSOR
+Institution: DBS GLOBAL UNIVERSITY
+
+Objectives of the Project
+•	To collect authentic data from Indian B-Schools through primary and secondary sources. 
+•	To ensure accuracy and comparability by cleaning and standardizing datasets. 
+•	To validate institutional claims through cross-verification with credible sources. 
+•	To prepare structured profiles and categorized datasets aligned with ranking parameters. 
+•	To provide actionable insights and summaries for the ranking publication
+
+.
+Scope of the Project
+•	Covered over 100 B-Schools and universities across India.
+•	Included primary outreach (emails, calls, follow-ups) and secondary research (websites, brochures, PDFs, accreditation databases).
+•	Focused on data preparation, structuring, and insights generation for rankings.
+•	Excluded final methodology decisions, which remained under MDRA’s senior team.
+
+Methodology
+	Primary Data Collection: Reached out to institutions via emails, telephonic calls, and forms.
+	Secondary Data Collection: Reviewed official websites, brochures, accreditation bodies, and public databases.
+	Data Cleaning & Validation: Removed duplicates, anomalies, and formatted inconsistent entries using Excel.
+	Data Structuring: Categorized institutions by type, specialization, and geography; developed individual profiles.
+	Finalization: Submitted structured Excel sheets and executive summaries to MDRA.
+
+                                                                                       20
+Key Deliverables
+	Compiled data of 100+ B-Schools across India.
+	Included details on fees, faculty strength, infrastructure, placements, accreditations, and collaborations.
+	Removed duplicates, anomalies, and formatting inconsistencies.
+	Ensured uniformity in entries such as program names, location formats, and fee structures.
+	Cross-verified institutional claims with official websites, brochures, and accreditation bodies.
+	Enhanced data credibility by supplementing institutional responses with secondary research.
+	Maintained records of email follow-ups, telephonic conversations, and institutional responses.
+	Documented pending and completed communication for transparency.
+	summarized data completeness, challenges, and reliability improvements.
+
+•	Submitted as the official input for the 2025 India Today–MDRA B-School Rankings.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                               21
+
+
+REFLECTIONS AND KEY LEARNINGS
+Introduction
+The Summer Internship Project at MDRA offered a unique opportunity to gain first-hand exposure to the field of market research and academic rankings. The project allowed me to engage in diverse activities such as data collection, validation, structuring, and reporting, while also interacting with institutional representatives, research teams, and editorial staff. This experience significantly contributed to my professional, technical, and personal development.
+This chapter presents my personal reflections and key learnings gained during the course of the internship.
+1. Professional Growth and Exposure
+•	Gained experience working in a real-world research organization known for large-scale ranking studies.
+•	Understood the importance of credibility, accuracy, and timelines in high-stakes research publications.
+•	Learned the workflow of professional market research projects, from data collection to final reporting.
+•	Observed how cross-functional teams (research, editorial, analytics) collaborate to deliver outcomes.
+.
+ 2. Practical Experience
+	Handled end-to-end data compilation for over 100 institutions.
+	Practiced professional communication with institutional representatives through emails and calls.
+	Understood challenges in obtaining timely responses and developed persistent follow-up strategies.
+	Experienced the pressure of deadlines and learned to prioritize critical tasks
+
+                                                                                       22
+3. Technical and Analytical Learning
+	Strengthened Excel skills: used formulas like TRIM(), CLEAN(), and PROPER() for data consistency.
+	Learned to use pivot tables and charts for summaries and visual insights.
+	Practiced data cleaning and anomaly detection to improve dataset reliability.
+	Improved ability to structure raw data into actionable insights for rankings and publications.
+
+4. Soft Skills Enhancement
+•	Developed stakeholder management skills by coordinating with multiple institutions.
+•	Improved interpersonal communication through polite follow-ups and clarification emails.
+•	Enhanced attention to detail to avoid errors in manual data entry and verification.
+•	Gained confidence in professional presentation of data and insights to senior teams.
+
+5. Industry Insights
+	Observed key patterns in the education sector, such as ROI trends, faculty–student ratios, and accreditation practices.
+	Understood the role of rankings in shaping institutional reputation and influencing student choices.
+	Realized the growing importance of data-driven decision-making in the education industry.
+	Learned how independent validation is critical to maintain credibility in published research.
+
+ 6. Personal Takeaways
+•	Developed a research-oriented mindset with focus on accuracy and reliability.
+•	Learned how to differentiate between marketing claims and factual information.
+•	Gained persistence, adaptability, and time management skills in a professional setting.
+•	Understood how secondary research and structured reporting can contribute to large-scale industry projects.
+•	The internship reinforced my interest in analytics, research, and education sector studies as a potential career path.
+                                                                            23
+
+
+REFERENCES
+1.	Kotler, Philip & Keller, Kevin Lane. Marketing Management. Pearson Education, 15th Edition.
+
+2.	Kothari, C. R. Research Methodology: Methods and Techniques, New Age International Publishers, 5th Edition.
+
+3.	Observations and verbal guidance from seniors and manager.
+
+4.	 All India Council for Technical Education (AICTE) – https://www.aicte-india.org
+5.	 National Board of Accreditation (NBA) – https://www.nbaind.org
+6.	 Association to Advance Collegiate Schools of Business (AACSB) – https://www.aacsb.edu
+
+7.	Business Today B-School Rankings (2024 edition).
+
+
+
+
+
+
+
+
+
+
+                                                            24
+WEEKLY WORK SUMMARY
+
+Week 1
+Work Summary:
+	Initiate the process of compiling data from universities and business schools for upcoming rankings
+
+	Identified relevant institutions based on previous year's listings.
+
+	Manually collected data from emails, brochures, and official websites.
+
+	Entered raw data into pre-formatted Excel templates.
+
+	Created the initial database covering 100+ institutions with basic ranking parameters
+ Week 2
+ Work Summary:
+	Prepare the scraped data for evaluation and ranking by ensuring consistency and accuracy.
+
+	Removed duplicates and outliers.
+
+	Standardized fields such as fee structure, course names, and accreditations.
+
+	Used Excel formulas to ensure uniform data formatting.
+
+	Generated a clean, structured dataset for further review by the editorial team.
+ Week 3
+Work Summary:
+•	Fill data gaps and collect updated inputs directly from institutions.
+
+•	Sent follow-up emails to institutes requesting latest details on programs, batch strength. placements, etc.
+
+                                                                           25
+
+•	Collected fresh responses from over 30 institutions.
+
+•	Manually recorded all responses into designated Excel sheets.
+
+•	Significantly improved the completeness and recency of the data repository.
+Week 4
+Work Summary:
+•	Supplement institutional responses with verified public data.
+
+•	Reviewed official institute websites and brochures.
+
+•	Collected additional data points (e.g.. Infrastructure, international collaborations, faculty size).
+
+•	Cross-verified program offerings and accreditations.
+
+•	Strengthened data credibility with independently verified entries.
+Week 5
+Work Summary:
+•	Completed the remaining institutional data entries to ensure dataset completeness.
+•	Conducted additional follow-up calls to clarify ambiguous or missing information from institutions.
+•	Revised and cleaned Excel sheets to enhance accuracy, consistency, and formatting.
+•	Organized all Word notes systematically by college name for quick reference and review.
+•	Utilized AI tools to identify gaps and inconsistencies in data coverage.
+
+ Week 6
+ Work Summary:
+•	Collect data from institutions that didn't respond during primary outreach.
+
+•	Identified missing institutions from the previous year's rankings.
+
+•	Conducted telephonic follow-ups and revisited online sources.
+
+•	Maintained a response log for communication tracking.
+                                                                                    26
+
+•	Recovered or reconstructed missing data for many institutes.
+Week 7
+ Work Summary:
+•	Organize validated data in line with ranking method.
+
+•	Segregated institutions by category.
+
+•	Prepared individual institution profiles in Excel with all ranking parameters.
+
+•	Created index sheets for quick navigation across data sets.
+
+•	Delivered a well-organized database for editorial and analytics teams.
+ Week 8
+ Work Summary:
+•	Submit final dataset and assist in report generation.
+
+•	Final formatting of Excel sheets with filters, color codes, and footnotes.
+
+•	Created an executive summary highlighting key patterns and data completeness.
+
+•	Briefed senior editors/research leads on the structure and logic of the sheets.
+
+•	Submitted final deliverables used as input for the 2025 rankings publication process.
+
+
+
+
+ 27
+APPENDIX
+Appendix – I: Internship Work Samples
+•	Screenshots of Excel sheets used for data entry, cleaning, and formatting.
+•	Sample email drafts sent to institutions for data requests and clarifications.
+•	Notes and communication logs documenting follow-ups with B-Schools.
+
+Appendix – II: Data Collected During Internship
+ Institutional information on:
+•	Fee structure and program details.
+•	Faculty strength and student intake.
+•	Placement data and recruiter profiles.
+•	Accreditation details (AICTE, NBA, AACSB, EQUIS).
+•	Infrastructure and international collaborations.
+•	Structured database covering 100+ B-Schools across India.
+•	Supplementary data from official websites, brochures, PDFs, and annual reports
+
+Appendix – III: Reports Prepared
+  Executive Summaries highlighting:
+•	Trends in accreditations and ROI.
+•	Placement patterns across institutions.
+•	Regional distribution and specialization strengths.
+•	 Institution Profiles prepared in Excel with ranking parameters.
+•	 Final Dataset Submission with filters, color codes, and notes for use.
+                                                                         28
+Appendix – IV: Organizational Documents (Internal Reference)
+•	Templates provided by MDRA for structured data entry.
+•	Internal guidelines on ranking parameters and evaluation framework.
+•	Confidential instructions on handling institutional communication.
+•	Reference documents from MDRA on previous year rankings for benchmarking.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
