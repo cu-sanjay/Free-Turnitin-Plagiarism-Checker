@@ -2,7 +2,6 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { createServer as createViteServer } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,6 +17,7 @@ export function log(message) {
 }
 
 export async function setupVite(app, server) {
+  const { createServer: createViteServer } = await import("vite");
   const vite = await createViteServer({
     server: {
       middlewareMode: true,
