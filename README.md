@@ -1,6 +1,6 @@
 >[!IMPORTANT]
 > The site is currently facing functional issues. If it is not working, it will be fixed soon.  
-> In the meantime, if you need a [Turnitin report PDF](https://www.turnitin.com/) for anything, you can reach out to me at **sanjaychoudharycu@gmail.com**.  
+> In the meantime, if you need a [Turnitin report PDF](https://www.turnitin.com/) for anything, you can reach out to me at **[NOT NOW]**.  
 > I will share the report PDF whenever I get free and see your request. Please wait patiently.  
 > ⭐ Don’t forget to star the repo and support the work!
 
