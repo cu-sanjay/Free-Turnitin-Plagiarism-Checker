@@ -1,141 +1,198 @@
-export function calculateSimilarity(text1, text2) {
-  const words1 = text1.toLowerCase().split(/\s+/);
-  const words2 = text2.toLowerCase().split(/\s+/);
+const DEFAULT_MIN_MATCH_WORDS = 5;
 
-  const allWords = [...new Set([...words1, ...words2])];
-
-  const vector1 = allWords.map((word) => words1.filter((w) => w === word).length);
-  const vector2 = allWords.map((word) => words2.filter((w) => w === word).length);
-
-  const dotProduct = vector1.reduce((sum, val, i) => sum + val * vector2[i], 0);
-  const magnitude1 = Math.sqrt(vector1.reduce((sum, val) => sum + val * val, 0));
-  const magnitude2 = Math.sqrt(vector2.reduce((sum, val) => sum + val * val, 0));
-
-  if (magnitude1 === 0 || magnitude2 === 0) return 0;
-
-  return dotProduct / (magnitude1 * magnitude2);
+function getExcludedRanges(text, options) {
+  const ranges = [];
+  if (options.excludeQuotes) {
+    for (const match of text.matchAll(/"[^"\r\n]{2,}"|“[^”\r\n]{2,}”|^\s*>[^\r\n]*/gm)) {
+      ranges.push({ start: match.index, end: match.index + match[0].length });
+    }
+  }
+  if (options.excludeReferences) {
+    const heading =
+      /^[ \t]*(?:#{1,6}[ \t]*)?(?:references|works cited|bibliography|sources)[ \t]*:?[ \t]*$/im.exec(text);
+    if (heading) {
+      ranges.push({ start: heading.index, end: text.length });
+    }
+  }
+  return ranges;
 }
 
-export async function searchWeb(query) {
-  const urls = [];
+function getTokens(text, excludedRanges = []) {
+  return Array.from(text.matchAll(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu), (match) => ({
+    word: match[0].toLowerCase().replaceAll("’", "'"),
+    start: match.index,
+    end: match.index + match[0].length,
+  })).filter(({ start }) =>
+    !excludedRanges.some((range) => start >= range.start && start < range.end)
+  );
+}
 
-  try {
-    const searchQuery = encodeURIComponent(query.slice(0, 200));
-    const ddgUrl = `https://html.duckduckgo.com/html/?q=${searchQuery}`;
+function createNgramIndex(tokens, minMatchWords) {
+  const index = new Map();
+  for (let position = 0; position <= tokens.length - minMatchWords; position++) {
+    const key = tokens
+      .slice(position, position + minMatchWords)
+      .map(({ word }) => word)
+      .join(" ");
+    const positions = index.get(key) ?? [];
+    positions.push(position);
+    index.set(key, positions);
+  }
+  return index;
+}
 
-    const response = await fetch(ddgUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      },
-    });
+function countCoveredTokens(matches) {
+  const positions = new Set();
+  for (const match of matches) {
+    for (let position = match.tokenStart; position < match.tokenEnd; position++) {
+      positions.add(position);
+    }
+  }
+  return positions.size;
+}
 
-    const html = await response.text();
+function mergeHighlightRanges(sourceResults) {
+  const ranges = sourceResults
+    .flatMap(({ name, matches }) =>
+      matches.map(({ start, end }) => ({ start, end, sources: [name] }))
+    )
+    .sort((left, right) => left.start - right.start || left.end - right.end);
+  const merged = [];
 
-    const resultMatches = html.match(/uddg=([^"&]+)/g) || [];
-    const ddgUrls = resultMatches
-      .map((match) => {
-        const encoded = match.replace("uddg=", "");
-        try {
-          return decodeURIComponent(encoded);
-        } catch {
-          return null;
-        }
-      })
-      .filter(
-        (url) => url && url.startsWith("http") && !url.includes("duckduckgo.com")
-      )
-      .slice(0, 8);
-
-    urls.push(...ddgUrls.filter(url => url !== null));
-  } catch (error) {
-    console.error("DuckDuckGo search error:", error);
+  for (const range of ranges) {
+    const previous = merged.at(-1);
+    if (previous && range.start <= previous.end) {
+      previous.end = Math.max(previous.end, range.end);
+      previous.sources = [...new Set([...previous.sources, ...range.sources])];
+    } else {
+      merged.push(range);
+    }
   }
 
-  try {
-    const searchQuery = encodeURIComponent(query.slice(0, 150));
-    const crossrefUrl = `https://api.crossref.org/works?query=${searchQuery}&rows=5`;
+  return merged;
+}
 
-    const response = await fetch(crossrefUrl);
-    const data = await response.json();
+export function compareAgainstSources(
+  text,
+  sources,
+  options = {
+    excludeQuotes: false,
+    excludeReferences: false,
+    minMatchWords: DEFAULT_MIN_MATCH_WORDS,
+  }
+) {
+  const minMatchWords = options.minMatchWords ?? DEFAULT_MIN_MATCH_WORDS;
+  const allSubmissionTokens = getTokens(text);
+  const submissionTokens = getTokens(text, getExcludedRanges(text, options));
+  const submissionWords = submissionTokens.map(({ word }) => word);
+  const sourceResults = sources.map((source) => {
+    if (source.exclude) {
+      return {
+        id: source.id,
+        name: source.name,
+        url: source.url ?? "",
+        matches: [],
+        matchedWords: 0,
+        similarityPercentage: 0,
+        excluded: true,
+      };
+    }
+    const referenceTokens = getTokens(source.text);
+    const index = createNgramIndex(referenceTokens, minMatchWords);
+    const matches = [];
 
-    if (data.message?.items) {
-      for (const item of data.message.items) {
-        if (item.URL) {
-          urls.push(item.URL);
+    for (
+      let submissionStart = 0;
+      submissionStart <= submissionTokens.length - minMatchWords;
+    ) {
+      const key = submissionWords
+        .slice(submissionStart, submissionStart + minMatchWords)
+        .join(" ");
+      const referencePositions = index.get(key);
+      if (!referencePositions) {
+        submissionStart++;
+        continue;
+      }
+
+      let bestLength = 0;
+      let bestReferenceStart = 0;
+      const maxPossibleLength = Math.min(
+        submissionTokens.length - submissionStart,
+        referenceTokens.length
+      );
+      for (const referenceStart of referencePositions) {
+        let length = minMatchWords;
+        while (
+          submissionStart + length < submissionTokens.length &&
+          referenceStart + length < referenceTokens.length &&
+          submissionWords[submissionStart + length] ===
+            referenceTokens[referenceStart + length].word
+        ) {
+          length++;
+        }
+        if (length > bestLength) {
+          bestLength = length;
+          bestReferenceStart = referenceStart;
+          if (bestLength === maxPossibleLength) break;
         }
       }
+
+      if (bestLength < minMatchWords) {
+        submissionStart++;
+        continue;
+      }
+
+      const submissionEnd = submissionStart + bestLength;
+      const referenceEnd = bestReferenceStart + bestLength;
+      matches.push({
+        tokenStart: submissionStart,
+        tokenEnd: submissionEnd,
+        start: submissionTokens[submissionStart].start,
+        end: submissionTokens[submissionEnd - 1].end,
+        text: text.slice(
+          submissionTokens[submissionStart].start,
+          submissionTokens[submissionEnd - 1].end
+        ),
+        referenceText: source.text.slice(
+          referenceTokens[bestReferenceStart].start,
+          referenceTokens[referenceEnd - 1].end
+        ),
+        matchedWords: bestLength,
+      });
+      submissionStart = submissionEnd;
     }
-  } catch (error) {
-    console.error("CrossRef search error:", error);
+
+    return {
+      id: source.id,
+      name: source.name,
+      url: source.url ?? "",
+      matches,
+      matchedWords: countCoveredTokens(matches),
+      similarityPercentage: 0,
+    };
+  });
+
+  const matchedWords = countCoveredTokens(sourceResults.flatMap(({ matches }) => matches));
+  const similarityPercentage = submissionTokens.length
+    ? Math.round((matchedWords / submissionTokens.length) * 100)
+    : 0;
+
+  for (const source of sourceResults) {
+    source.similarityPercentage = submissionTokens.length
+      ? Math.round((source.matchedWords / submissionTokens.length) * 100)
+      : 0;
   }
 
-  return [...new Set(urls)].slice(0, 10);
-}
-
-export async function fetchPageContent(url) {
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-      },
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      console.log(`Failed to fetch ${url}: ${response.status}`);
-      return "";
-    }
-
-    const html = await response.text();
-
-    let text = html
-      .replace(/<script[^>]*>.*?<\/script>/gis, "")
-      .replace(/<style[^>]*>.*?<\/style>/gis, "")
-      .replace(/<nav[^>]*>.*?<\/nav>/gis, "")
-      .replace(/<header[^>]*>.*?<\/header>/gis, "")
-      .replace(/<footer[^>]*>.*?<\/footer>/gis, "")
-      .replace(/<aside[^>]*>.*?<\/aside>/gis, "")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/&[a-z]+;/gi, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    return text.slice(0, 5000);
-  } catch (error) {
-    console.error(`Error fetching ${url}:`, error);
-    return "";
-  }
-}
-
-export function nGramSimilarity(text1, text2, n = 5) {
-  const createNGrams = (text) => {
-    const words = text.toLowerCase().replace(/[^\w\s]/g, "").split(/\s+/);
-    const ngrams = new Set();
-    for (let i = 0; i <= words.length - n; i++) {
-      ngrams.add(words.slice(i, i + n).join(" "));
-    }
-    return ngrams;
+  return {
+    minMatchWords,
+    wordCount: submissionTokens.length,
+    excludedWords: allSubmissionTokens.length - submissionTokens.length,
+    matchedWords,
+    similarityPercentage,
+    sources: sourceResults
+      .filter(({ matches }) => matches.length > 0)
+      .sort((left, right) => right.matchedWords - left.matchedWords),
+    excludedSourceCount: sourceResults.filter(({ excluded }) => excluded).length,
+    highlightRanges: mergeHighlightRanges(sourceResults),
   };
-
-  const ngrams1 = createNGrams(text1);
-  const ngrams2 = createNGrams(text2);
-
-  if (ngrams1.size === 0 || ngrams2.size === 0) return 0;
-
-  let matches = 0;
-  for (const gram of ngrams1) {
-    if (ngrams2.has(gram)) matches++;
-  }
-
-  return matches / Math.max(ngrams1.size, ngrams2.size);
 }

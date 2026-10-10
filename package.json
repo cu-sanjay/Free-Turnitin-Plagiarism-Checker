@@ -1,12 +1,53 @@
 {
   "name": "plagiarism-checker",
+  "productName": "ClearMark",
+  "version": "1.0.0",
+  "description": "A private desktop similarity checker for your own reference documents.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cu-sanjay/Free-Turnitin-Plagiarism-Checker.git"
+  },
   "private": true,
-  "version": "0.0.4",
   "type": "module",
+  "main": "desktop/main.js",
   "scripts": {
     "dev": "node server/index.js",
     "build": "vite build",
-    "start": "NODE_ENV=production node server/index.js"
+    "start": "node scripts/start.js",
+    "test": "node --test",
+    "desktop": "npm run build && electron .",
+    "desktop:dist": "npm run build && electron-builder --win nsis --publish never"
+  },
+  "build": {
+    "appId": "app.clearmark.desktop",
+    "productName": "ClearMark",
+    "asar": true,
+    "files": [
+      "desktop/**/*",
+      "server/**/*",
+      "shared/**/*",
+      "dist/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
   },
   "dependencies": {
     "@babel/core": "^7.28.5",
@@ -48,6 +89,8 @@
     "express": "^4.21.2",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
+    "mammoth": "^1.11.0",
+    "pdfjs-dist": "^5.4.149",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
@@ -65,6 +108,8 @@
     "@tailwindcss/typography": "^0.5.16",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "autoprefixer": "^10.4.21",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "vite": "^5.4.19"
