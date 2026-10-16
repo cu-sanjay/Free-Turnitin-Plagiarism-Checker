@@ -3,8 +3,8 @@ import { registerRoutes } from "./routes.js";
 import { setupVite, serveStatic, log } from "./vite.js";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "12mb" }));
+app.use(express.urlencoded({ extended: false, limit: "12mb" }));
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -21,12 +21,18 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      if (capturedJsonResponse && typeof capturedJsonResponse === "object") {
+        const summary = {
+          error: capturedJsonResponse.error,
+          plagiarismPercentage: capturedJsonResponse.plagiarismPercentage,
+          passagesChecked: capturedJsonResponse.passagesChecked,
+        };
+        const compact = JSON.stringify(summary);
+        if (compact !== "{}") logLine += ` :: ${compact}`;
       }
 
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
+      if (logLine.length > 180) {
+        logLine = logLine.slice(0, 179) + "…";
       }
 
       log(logLine);
@@ -40,11 +46,14 @@ app.use((req, res, next) => {
   const server = registerRoutes(app);
 
   app.use((err, _req, res, _next) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    const tooLarge = err?.type === "entity.too.large" || err?.status === 413;
+    const status = tooLarge ? 413 : err.status || err.statusCode || 500;
+    const message = tooLarge
+      ? "This document is larger than the server can accept in one request. Split it into a smaller part."
+      : err.message || "Internal Server Error";
 
     console.error("Error:", err);
-    res.status(status).json({ message });
+    res.status(status).json({ error: message, message });
   });
 
   if (app.get("env") === "development") {

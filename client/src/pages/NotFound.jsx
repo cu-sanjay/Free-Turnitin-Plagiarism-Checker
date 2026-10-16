@@ -1,20 +1,25 @@
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+
 const NotFound = () => {
   const [location] = useLocation();
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location);
   }, [location]);
-  return <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-6xl font-bold text-foreground" data-testid="text-404">404</h1>
-        <p className="mb-6 text-2xl text-muted-foreground" data-testid="text-not-found">Oops! Page not found</p>
-        <Button asChild data-testid="button-home">
-          <Link href="/">Return to Home</Link>
-        </Button>
-      </div>
-    </div>;
+  return (
+    <div className="page">
+      <p className="kicker">404</p>
+      <h1 data-testid="text-404" style={{ fontSize: "4rem", letterSpacing: "-0.05em" }}>
+        Page not found
+      </h1>
+      <p className="lede" data-testid="text-not-found" style={{ margin: "0.8rem 0 1.2rem" }}>
+        That address is not part of this checker.
+      </p>
+      <Link href="/" className="primary-button" data-testid="button-home" style={{ textDecoration: "none" }}>
+        Return to Check
+      </Link>
+    </div>
+  );
 };
+
 export default NotFound;
