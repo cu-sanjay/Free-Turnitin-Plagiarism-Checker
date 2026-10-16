@@ -1,312 +1,73 @@
-const PLAGIARISM_THRESHOLD = 0.5;
-const SOURCE_THRESHOLD = 0.15;
-const DEFAULT_MAX_PASSAGES = 24;
-const URLS_PER_PASSAGE = 4;
+import {
+  buildDocIndex,
+  findSourceRuns,
+  MIN_RUN_WORDS,
+  planSegments,
+  queryForWindow,
+  resolveSpans,
+  roundTo,
+  SHINGLE_SIZE,
+  spreadOrder,
+  tokenizeDocument,
+  tokenizeSource,
+  formatPercent,
+} from "../shared/similarity.js";
+import { abortError, createSearchProvider, fetchPageContent, hostnameOf, shouldFetchUrl } from "./search.js";
 
-function yieldToEventLoop() {
-  return new Promise((resolve) => setImmediate(resolve));
-}
+export const RESULT_VERSION = 2;
+const QUERY_WORDS = 10;
+const SEGMENT_WORDS = 30;
+const COVERED_FRACTION = 0.7;
+const SEARCH_WORKERS = 3;
+const FETCH_SLOTS = 4;
+const FETCHES_PER_HOST = 2;
+
+const yieldToEventLoop = () => new Promise((resolve) => setImmediate(resolve));
 
 function clampPercent(value) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
 
-function wordList(text) {
-  return String(text || "")
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
-function termFrequency(words) {
-  const counts = new Map();
-  for (const word of words) {
-    counts.set(word, (counts.get(word) || 0) + 1);
-  }
-  return counts;
-}
-
-export function calculateSimilarity(text1, text2) {
-  const words1 = String(text1 || "").toLowerCase().split(/\s+/).filter(Boolean);
-  const words2 = String(text2 || "").toLowerCase().split(/\s+/).filter(Boolean);
-  if (!words1.length || !words2.length) return 0;
-
-  const freq1 = termFrequency(words1);
-  const freq2 = termFrequency(words2);
-
-  let dot = 0;
-  let mag1 = 0;
-  let mag2 = 0;
-
-  for (const count of freq1.values()) mag1 += count * count;
-  for (const count of freq2.values()) mag2 += count * count;
-  for (const [word, count] of freq1) {
-    const other = freq2.get(word);
-    if (other) dot += count * other;
+class Semaphore {
+  constructor(limit) {
+    this.limit = limit;
+    this.active = 0;
+    this.waiting = [];
   }
 
-  if (mag1 === 0 || mag2 === 0) return 0;
-  return Math.min(1, dot / (Math.sqrt(mag1) * Math.sqrt(mag2)));
-}
-
-export function nGramSimilarity(text1, text2, n = 5) {
-  const createNGrams = (text) => {
-    const words = String(text || "")
-      .toLowerCase()
-      .replace(/[^\w\s]/g, "")
-      .split(/\s+/)
-      .filter(Boolean);
-    const ngrams = new Set();
-    for (let i = 0; i <= words.length - n; i++) {
-      ngrams.add(words.slice(i, i + n).join(" "));
-    }
-    return ngrams;
-  };
-
-  const ngrams1 = createNGrams(text1);
-  const ngrams2 = createNGrams(text2);
-  if (ngrams1.size === 0 || ngrams2.size === 0) return 0;
-
-  let matches = 0;
-  const [smaller, larger] = ngrams1.size <= ngrams2.size ? [ngrams1, ngrams2] : [ngrams2, ngrams1];
-  for (const gram of smaller) {
-    if (larger.has(gram)) matches++;
-  }
-
-  return matches / Math.max(ngrams1.size, ngrams2.size);
-}
-
-export function stripQuotedAndCitations(text) {
-  return String(text || "")
-    .replace(/"[^"\n]{0,800}"/g, " ")
-    .replace(/“[^”\n]{0,800}”/g, " ")
-    .replace(/\[[0-9,\s-]{1,24}\]/g, " ")
-    .replace(/\((?:[^()]{0,160})\)/g, (match) => (/\d{4}|et al\./i.test(match) ? " " : match));
-}
-
-export function preparePassages(text, { excludeQuotes = false } = {}) {
-  let source = String(text || "");
-  if (excludeQuotes) source = stripQuotedAndCitations(source);
-
-  const sentences = source
-    .split(/[.!?]+/)
-    .map((sentence) => sentence.replace(/\s+/g, " ").trim())
-    .filter((sentence) => sentence.length > 20);
-
-  const passages = [];
-  for (const sentence of sentences) {
-    const words = sentence.split(/\s+/).filter(Boolean);
-    if (words.length <= 80) {
-      passages.push(sentence);
-      continue;
-    }
-    for (let i = 0; i < words.length; i += 40) {
-      const slice = words.slice(i, i + 40).join(" ");
-      if (slice.length > 20) passages.push(slice);
+  async use(task) {
+    if (this.active >= this.limit) await new Promise((resolve) => this.waiting.push(resolve));
+    this.active++;
+    try {
+      return await task();
+    } finally {
+      this.active--;
+      this.waiting.shift()?.();
     }
   }
-  return passages;
 }
 
-export function defaultMaxPassages(count) {
-  if (count <= 20) return count;
-  return DEFAULT_MAX_PASSAGES;
+export function defaultQueryBudget(wordCount) {
+  return Math.max(24, Math.min(60, Math.round(24 + wordCount / 150)));
 }
 
-export function selectPassages(passages, maxPassages = DEFAULT_MAX_PASSAGES) {
-  const list = Array.isArray(passages) ? passages : [];
-  const max = Math.max(0, maxPassages);
-  if (!list.length || max === 0) return [];
-  if (list.length <= max) {
-    return list.map((text, index) => ({ text, index }));
-  }
-
-  const chosen = [];
-  const seen = new Set();
-  const slots = Math.max(1, max);
-  for (let i = 0; i < slots; i++) {
-    const index = Math.round((i * (list.length - 1)) / Math.max(1, slots - 1));
-    if (seen.has(index)) continue;
-    seen.add(index);
-    chosen.push({ text: list[index], index });
-  }
-  return chosen;
+function normalizeFetched(value) {
+  if (typeof value === "string") return value ? { ok: true, text: value, title: "" } : { ok: false, reason: "Empty page" };
+  return value || { ok: false, reason: "No response" };
 }
 
-export function extractExcerpt(passage, content) {
-  const passageWords = wordList(passage).slice(0, 24);
-  const contentWords = String(content || "").split(/\s+/).filter(Boolean);
-  if (!passageWords.length || contentWords.length < 6) {
-    return String(content || "").replace(/\s+/g, " ").trim().slice(0, 280);
-  }
-
-  const contentLower = contentWords.map((word) => word.toLowerCase());
-  const step = Math.max(1, Math.floor(contentLower.length / 500));
-  const windowSize = passageWords.length;
-  let bestStart = 0;
-  let bestScore = 0;
-
-  for (let i = 0; i <= contentLower.length - Math.min(6, windowSize); i += step) {
-    let score = 0;
-    const limit = Math.min(windowSize, contentLower.length - i);
-    for (let j = 0; j < limit; j++) {
-      if (contentLower[i + j] === passageWords[j]) score++;
-    }
-    if (score > bestScore) {
-      bestScore = score;
-      bestStart = i;
-    }
-  }
-
-  const start = Math.max(0, bestStart - 6);
-  const end = Math.min(contentWords.length, bestStart + windowSize + 10);
-  const excerpt = contentWords.slice(start, end).join(" ");
-  return excerpt.length > 360 ? `${excerpt.slice(0, 357)}...` : excerpt;
+function normalizeSearch(value) {
+  if (Array.isArray(value)) return { urls: value, answered: true, errors: [] };
+  return { urls: value?.urls || [], answered: value?.answered ?? true, errors: value?.errors || [] };
 }
 
-function hostnameOf(url) {
-  try {
-    return new URL(url).hostname.replace(/^www\./, "");
-  } catch {
-    return url;
+export function describeSimilarity(stats, sourceCount) {
+  if (!stats.countedWords) return "There was no text to compare.";
+  const share = formatPercent(stats.overallPercent);
+  if (!stats.matchedWords) {
+    return "No passage of 7 or more words matched a public page that this check could open.";
   }
-}
-
-function summarize(plagiarismPercentage, sourceCount, checked, total) {
-  const scope =
-    checked < total
-      ? `Scores cover ${checked} of ${total} passages, spaced through the document.`
-      : `Scores cover every passage long enough to compare.`;
-  const limit =
-    "This is a public-web similarity check. It is not a Turnitin report and it does not search private research or IEEE databases.";
-
-  if (!checked) {
-    return `Not enough prose to compare. Add at least one passage longer than 20 characters. ${limit}`;
-  }
-  if (plagiarismPercentage === 0 && sourceCount === 0) {
-    return `${scope} No compared passage cleared the match threshold on the pages this check could fetch. ${limit}`;
-  }
-  if (plagiarismPercentage < 20) {
-    return `${scope} ${sourceCount} source${sourceCount === 1 ? "" : "s"} overlapped with the compared passages. ${limit}`;
-  }
-  if (plagiarismPercentage < 50) {
-    return `${scope} A noticeable share of compared passages overlapped public pages (${sourceCount} source${sourceCount === 1 ? "" : "s"}). ${limit}`;
-  }
-  return `${scope} Many compared passages closely matched public pages (${sourceCount} source${sourceCount === 1 ? "" : "s"}). ${limit}`;
-}
-
-export async function searchWeb(query) {
-  const urls = [];
-
-  try {
-    const searchQuery = encodeURIComponent(String(query || "").slice(0, 200));
-    const ddgUrl = `https://html.duckduckgo.com/html/?q=${searchQuery}`;
-    const response = await fetch(ddgUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      },
-    });
-    const html = await response.text();
-    const resultMatches = html.match(/uddg=([^"&]+)/g) || [];
-    const ddgUrls = resultMatches
-      .map((match) => {
-        const encoded = match.replace("uddg=", "");
-        try {
-          return decodeURIComponent(encoded);
-        } catch {
-          return null;
-        }
-      })
-      .filter((url) => url && url.startsWith("http") && !url.includes("duckduckgo.com"))
-      .slice(0, 8);
-    urls.push(...ddgUrls.filter(Boolean));
-  } catch (error) {
-    console.error("DuckDuckGo search error:", error.message || error);
-  }
-
-  try {
-    const searchQuery = encodeURIComponent(String(query || "").slice(0, 150));
-    const crossrefUrl = `https://api.crossref.org/works?query=${searchQuery}&rows=5`;
-    const response = await fetch(crossrefUrl, {
-      headers: { "User-Agent": "plagiarism-checker/0.0.4 (academic similarity check)" },
-    });
-    const data = await response.json();
-    if (data.message?.items) {
-      for (const item of data.message.items) {
-        if (item.URL) urls.push(item.URL);
-      }
-    }
-  } catch (error) {
-    console.error("CrossRef search error:", error.message || error);
-  }
-
-  return [...new Set(urls)].slice(0, 10);
-}
-
-export async function fetchPageContent(url) {
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-      },
-      signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
-
-    if (!response.ok) return "";
-
-    const html = await response.text();
-    const text = html
-      .replace(/<script[^>]*>.*?<\/script>/gis, "")
-      .replace(/<style[^>]*>.*?<\/style>/gis, "")
-      .replace(/<nav[^>]*>.*?<\/nav>/gis, "")
-      .replace(/<header[^>]*>.*?<\/header>/gis, "")
-      .replace(/<footer[^>]*>.*?<\/footer>/gis, "")
-      .replace(/<aside[^>]*>.*?<\/aside>/gis, "")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/&[a-z]+;/gi, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    return text.slice(0, 5000);
-  } catch (error) {
-    console.error(`Error fetching ${url}:`, error.message || error);
-    return "";
-  }
-}
-
-function groupSources(results) {
-  const grouped = new Map();
-  for (const item of results) {
-    for (const source of item.sources || []) {
-      const current = grouped.get(source.url) || {
-        url: source.url,
-        host: hostnameOf(source.url),
-        matchCount: 0,
-        maxSimilarity: 0,
-        similarityTotal: 0,
-      };
-      current.matchCount += 1;
-      current.similarityTotal += source.similarity;
-      current.maxSimilarity = Math.max(current.maxSimilarity, source.similarity);
-      grouped.set(source.url, current);
-    }
-  }
-  return [...grouped.values()]
-    .map((source) => ({
-      url: source.url,
-      host: source.host,
-      matchCount: source.matchCount,
-      maxSimilarity: source.maxSimilarity,
-      avgSimilarity: Math.round(source.similarityTotal / source.matchCount),
-    }))
-    .sort((a, b) => b.maxSimilarity - a.maxSimilarity || b.matchCount - a.matchCount);
+  return `${share} of the document (${stats.matchedWords.toLocaleString("en-US")} of ${stats.countedWords.toLocaleString("en-US")} words) matches ${sourceCount} public source${sourceCount === 1 ? "" : "s"}.`;
 }
 
 export async function checkPlagiarism(text, options = {}) {
@@ -314,130 +75,298 @@ export async function checkPlagiarism(text, options = {}) {
     excludeQuotes = false,
     onProgress = () => {},
     signal,
-    search = searchWeb,
-    fetchContent = fetchPageContent,
-    maxPassages,
+    provider = options.search ? null : createSearchProvider(),
+    search = (query, abortSignal) => provider.search(query, abortSignal),
+    fetchContent = (url, abortSignal) => fetchPageContent(url, { signal: abortSignal }),
+    maxQueries,
+    maxFetches = 80,
+    timeBudgetMs = 240_000,
+    urlsPerQuery = 5,
+    searchWorkers = SEARCH_WORKERS,
   } = options;
 
+  let lastPercent = 0;
   const report = (phase, percent, message, extra = {}) => {
-    onProgress({
-      phase,
-      percent: clampPercent(percent),
-      message,
-      ...extra,
-    });
+    lastPercent = Math.max(lastPercent, clampPercent(percent));
+    onProgress({ phase, percent: lastPercent, message, ...extra });
   };
-
   const throwIfAborted = () => {
-    if (signal?.aborted) {
-      const error = new Error("Check cancelled");
-      error.name = "AbortError";
-      throw error;
-    }
+    if (signal?.aborted) throw abortError();
   };
 
   report("prepare", 2, "Reading the document");
   await yieldToEventLoop();
   throwIfAborted();
 
-  const passages = preparePassages(text, { excludeQuotes });
-  const limit = maxPassages ?? defaultMaxPassages(passages.length);
-  const selected = selectPassages(passages, limit);
-  const wordCount = String(text || "")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean).length;
+  const doc = tokenizeDocument(text, { excludeQuotes });
+  const docIndex = buildDocIndex(doc);
+  const segments = planSegments(doc, { segmentWords: SEGMENT_WORDS, queryWords: QUERY_WORDS });
+  const budget = maxQueries ?? defaultQueryBudget(doc.counted);
 
-  report("prepare", 8, `Prepared ${passages.length} passages`, {
-    completed: 0,
-    total: selected.length,
-  });
-
-  const results = [];
-
-  for (let i = 0; i < selected.length; i++) {
-    throwIfAborted();
-    const passage = selected[i];
-    const percent = 10 + Math.round((i / selected.length) * 80);
-    report("compare", percent, `Comparing passage ${i + 1} of ${selected.length}`, {
-      completed: i,
-      total: selected.length,
-    });
-
-    const urls = (await search(passage.text)).slice(0, URLS_PER_PASSAGE);
-    let maxSimilarity = 0;
-    const matchedSources = [];
-
-    for (const url of urls) {
-      throwIfAborted();
-      const content = await fetchContent(url);
-      if (!content || content.length <= 100) continue;
-
-      const cosineSim = calculateSimilarity(passage.text, content);
-      const ngramSim = nGramSimilarity(passage.text, content, 5);
-      const similarity = Math.max(cosineSim, ngramSim);
-      if (similarity > maxSimilarity) maxSimilarity = similarity;
-
-      if (similarity > SOURCE_THRESHOLD) {
-        matchedSources.push({
-          url,
-          host: hostnameOf(url),
-          similarity: Math.round(similarity * 100),
-          excerpt: extractExcerpt(passage.text, content),
-        });
-      }
-      await yieldToEventLoop();
+  const order = spreadOrder(segments.length);
+  const queue = [];
+  for (const pass of ["primary", "alternate"]) {
+    for (const index of order) {
+      const window = segments[index][pass];
+      if (window) queue.push({ segment: segments[index], window, pass });
     }
-
-    matchedSources.sort((a, b) => b.similarity - a.similarity);
-    results.push({
-      sentence: passage.text,
-      passageIndex: passage.index,
-      similarity: Math.round(maxSimilarity * 100),
-      sources: matchedSources,
-      isPlagiarized: maxSimilarity > PLAGIARISM_THRESHOLD,
-    });
   }
+  const planned = Math.min(budget, queue.length);
+  const segmentsWithoutQuery = segments.filter((segment) => !segment.primary).length;
 
-  report("summarize", 94, "Summarizing matches", {
-    completed: selected.length,
-    total: selected.length,
+  report("prepare", 6, `Found ${doc.counted.toLocaleString("en-US")} words in ${segments.length} segments`, {
+    completed: 0,
+    total: planned,
   });
-  await yieldToEventLoop();
 
-  const totalSimilarity = results.reduce((sum, item) => sum + item.similarity, 0);
-  const overallScore = results.length ? Math.round(totalSimilarity / results.length) : 0;
-  const plagiarizedCount = results.filter((item) => item.isPlagiarized).length;
-  const plagiarismPercentage = results.length ? Math.round((plagiarizedCount / results.length) * 100) : 0;
-  const sources = groupSources(results);
-  const coverageNote =
-    selected.length < passages.length
-      ? `Compared ${selected.length} of ${passages.length} passages, spaced from the start, middle, and end. Uncompared passages are not included in the score.`
-      : passages.length
-        ? `Compared all ${passages.length} passages that were long enough.`
-        : "No comparable passages were found.";
+  const covered = new Uint8Array(doc.count);
+  const sourceRuns = new Map();
+  const fetchedUrls = new Set();
+  const failures = [];
+  const failureReasons = new Map();
+  const searchErrors = new Map();
+  const searchedSegments = new Set();
+  const skippedSegments = new Set();
+  const hostSlots = new Map();
+  const fetchGate = new Semaphore(FETCH_SLOTS);
+  const deadline = Date.now() + timeBudgetMs;
 
-  const checkResult = {
-    overallScore,
-    plagiarismPercentage,
-    totalSentences: results.length,
-    plagiarizedSentences: plagiarizedCount,
-    results,
-    totalWords: wordCount,
-    characterCount: String(text || "").length,
-    passagesInDocument: passages.length,
-    passagesChecked: results.length,
-    sources,
-    coverageNote,
-    analysisSummary: summarize(plagiarismPercentage, sources.length, results.length, passages.length),
-    excludeQuotes: Boolean(excludeQuotes),
-    checkedAt: new Date().toISOString(),
+  let cursor = 0;
+  let executed = 0;
+  let processed = 0;
+  let answeredQueries = 0;
+  let pagesFetched = 0;
+  let fetchAttempts = 0;
+  let timeLimitReached = false;
+  let fetchLimitReached = false;
+  let coveredWords = 0;
+
+  const currentSegmentCoverage = (segment) => {
+    let hit = 0;
+    for (let i = segment.start; i < segment.end; i++) hit += covered[i];
+    return segment.end > segment.start ? hit / (segment.end - segment.start) : 1;
   };
 
-  report("done", 100, "Check complete", {
-    completed: selected.length,
-    total: selected.length,
-  });
+  const emitProgress = (message) => {
+    const fractionExecuted = planned ? executed / planned : 1;
+    const fractionProcessed = queue.length ? processed / queue.length : 1;
+    report("search", 8 + 84 * Math.min(1, Math.max(fractionExecuted, fractionProcessed)), message, {
+      completed: executed,
+      total: planned,
+      sourcesFound: sourceRuns.size,
+      pagesFetched,
+      matchedPercent: doc.counted ? roundTo((coveredWords / doc.counted) * 100, 1) : 0,
+    });
+  };
 
-  return checkResult;
+  const noteFailure = (url, reason) => {
+    failureReasons.set(reason, (failureReasons.get(reason) || 0) + 1);
+    if (failures.length < 12) failures.push({ url, host: hostnameOf(url), reason });
+  };
+
+  const hostSemaphore = (host) => {
+    if (!hostSlots.has(host)) hostSlots.set(host, new Semaphore(FETCHES_PER_HOST));
+    return hostSlots.get(host);
+  };
+
+  async function comparePage(url) {
+    const host = hostnameOf(url);
+    const page = await fetchGate.use(() =>
+      hostSemaphore(host).use(async () => {
+        throwIfAborted();
+        return normalizeFetched(await fetchContent(url, signal));
+      })
+    );
+    throwIfAborted();
+    if (!page.ok) {
+      noteFailure(url, page.reason || "Could not be read");
+      return;
+    }
+    pagesFetched++;
+    const ids = tokenizeSource(page.text, doc);
+    const runs = findSourceRuns(doc, docIndex, ids);
+    await yieldToEventLoop();
+    if (!runs.length) return;
+    sourceRuns.set(url, { key: url, url, host, title: page.title || "", runs });
+    for (const run of runs) {
+      for (let i = run.start; i < run.end; i++) {
+        if (!covered[i] && !doc.excluded[i]) coveredWords++;
+        covered[i] = 1;
+      }
+    }
+  }
+
+  async function worker() {
+    while (true) {
+      throwIfAborted();
+      if (Date.now() > deadline) {
+        timeLimitReached = true;
+        return;
+      }
+      if (executed >= budget || cursor >= queue.length) return;
+      const item = queue[cursor++];
+      processed++;
+      if (currentSegmentCoverage(item.segment) >= COVERED_FRACTION) {
+        if (!searchedSegments.has(item.segment.index)) skippedSegments.add(item.segment.index);
+        continue;
+      }
+      if (item.pass === "alternate" && currentSegmentCoverage(item.segment) > 0) continue;
+      executed++;
+      searchedSegments.add(item.segment.index);
+      skippedSegments.delete(item.segment.index);
+      const query = queryForWindow(doc, item.window, QUERY_WORDS);
+      emitProgress(`Searching phrase ${executed} of ${planned}`);
+
+      let outcome;
+      try {
+        outcome = normalizeSearch(await search(query, signal));
+      } catch (error) {
+        if (error?.name === "AbortError") throw error;
+        outcome = { urls: [], answered: false, errors: [{ engine: "search", message: error?.message || "Search failed" }] };
+      }
+      for (const error of outcome.errors) searchErrors.set(`${error.engine}: ${error.message}`, (searchErrors.get(`${error.engine}: ${error.message}`) || 0) + 1);
+      if (outcome.answered) answeredQueries++;
+
+      const fresh = [];
+      for (const url of outcome.urls) {
+        if (fresh.length >= urlsPerQuery) break;
+        if (fetchedUrls.has(url) || !shouldFetchUrl(url)) continue;
+        fetchedUrls.add(url);
+        fresh.push(url);
+      }
+      const allowed = [];
+      for (const url of fresh) {
+        if (fetchAttempts >= maxFetches) {
+          fetchLimitReached = true;
+          break;
+        }
+        fetchAttempts++;
+        allowed.push(url);
+      }
+      if (allowed.length) {
+        emitProgress(`Reading ${allowed.length} page${allowed.length === 1 ? "" : "s"} for phrase ${executed} of ${planned}`);
+        await Promise.all(allowed.map((url) => comparePage(url)));
+      }
+      emitProgress(
+        sourceRuns.size
+          ? `Phrase ${executed} of ${planned} · ${sourceRuns.size} source${sourceRuns.size === 1 ? "" : "s"} matched so far`
+          : `Phrase ${executed} of ${planned} searched`
+      );
+    }
+  }
+
+  if (segments.length) {
+    await Promise.all(Array.from({ length: Math.min(searchWorkers, Math.max(1, planned)) }, () => worker()));
+  }
+  throwIfAborted();
+
+  if (executed > 0 && answeredQueries === 0) {
+    const reasons = [...searchErrors.keys()].slice(0, 3).join("; ");
+    const error = new Error(
+      `No search engine could be reached, so nothing was checked and no score was produced. ${reasons}`.trim()
+    );
+    error.status = 502;
+    throw error;
+  }
+
+  report("summarize", 94, "Locating matches in your text", { completed: executed, total: planned });
+  await yieldToEventLoop();
+
+  const resolved = resolveSpans(doc, [...sourceRuns.values()]);
+  const sources = resolved.sources.map((source) => ({
+    id: source.id,
+    url: source.url,
+    host: source.host,
+    title: source.title,
+    matchedWords: source.matchedWords,
+    sharePercent: source.sharePercent,
+    spanCount: source.spanCount,
+    longestSpan: source.longestSpan,
+    overlapWords: source.overlapWords,
+  }));
+  const spans = resolved.spans.map(({ start, end, words, sourceId }) => ({ start, end, words, sourceId }));
+  const similarity = { ...resolved.stats, sourceCount: sources.length };
+
+  const alreadyMatched = segments.filter(
+    (segment) => !searchedSegments.has(segment.index) && (skippedSegments.has(segment.index) || currentSegmentCoverage(segment) >= COVERED_FRACTION)
+  ).length;
+  const segmentsSearched = searchedSegments.size;
+  const segmentsNotSearched = Math.max(0, segments.length - segmentsSearched - alreadyMatched);
+  const queriesFailed = executed - answeredQueries;
+
+  const coverage = {
+    segmentsTotal: segments.length,
+    segmentsSearched,
+    segmentsAlreadyMatched: alreadyMatched,
+    segmentsNotSearched,
+    segmentsWithoutQuery,
+    queriesRun: executed,
+    queriesFailed,
+    queryBudget: budget,
+    pagesFetched,
+    pagesFailed: [...failureReasons.values()].reduce((a, b) => a + b, 0),
+    timeLimitReached,
+    fetchLimitReached,
+  };
+
+  const notes = [];
+  if (!segments.length) {
+    notes.push({ level: "warning", text: "The text is too short, or has too few distinctive words, to build search phrases from." });
+  } else {
+    let scope = `Searched ${segmentsSearched} of ${segments.length} text segments with ${executed} search phrase${executed === 1 ? "" : "s"}`;
+    if (alreadyMatched) scope += `; ${alreadyMatched} more were already explained by a source found earlier`;
+    scope += ".";
+    notes.push({ level: segmentsNotSearched ? "warning" : "info", text: scope });
+    if (segmentsNotSearched) {
+      notes.push({
+        level: "warning",
+        text: `${segmentsNotSearched} segment${segmentsNotSearched === 1 ? " was" : "s were"} not searched (limit of ${budget} phrases per check${timeLimitReached ? ", and the time limit was reached" : ""}). Text in those parts could still match pages that were not looked up, so the real similarity can be higher than shown.`,
+      });
+    }
+  }
+  if (queriesFailed > 0) {
+    notes.push({ level: "warning", text: `${queriesFailed} search request${queriesFailed === 1 ? "" : "s"} got no answer from any search engine. Results for those phrases are missing, not zero.` });
+  }
+  const engineStats = provider ? provider.stats() : [];
+  for (const engine of engineStats) {
+    if (engine.blocked || engine.disabled) {
+      notes.push({
+        level: "info",
+        text: `${engine.name} ${engine.disabled ? "was switched off for this check" : "turned some requests away"}${engine.lastError ? ` (${engine.lastError})` : ""}. Other engines were used.`,
+      });
+    }
+  }
+  if (coverage.pagesFailed) {
+    const reasons = [...failureReasons.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([reason, count]) => `${reason} ×${count}`)
+      .join(", ");
+    notes.push({ level: "info", text: `${coverage.pagesFailed} candidate page${coverage.pagesFailed === 1 ? "" : "s"} could not be read (${reasons}), so they could not be compared.` });
+  }
+  if (fetchLimitReached) {
+    notes.push({ level: "info", text: `Stopped opening new pages after ${maxFetches} to stay polite to other sites.` });
+  }
+  if (doc.excludedCount) {
+    notes.push({ level: "info", text: `${doc.excludedCount.toLocaleString("en-US")} words in quotations or citations were excluded from the comparison and from the percentage.` });
+  }
+
+  const result = {
+    version: RESULT_VERSION,
+    checkedAt: new Date().toISOString(),
+    similarity,
+    summary: describeSimilarity(similarity, sources.length),
+    sources,
+    spans,
+    coverage,
+    engines: engineStats,
+    failures,
+    notes,
+    settings: { excludeQuotes: Boolean(excludeQuotes), minRunWords: MIN_RUN_WORDS, shingleWords: SHINGLE_SIZE },
+    totalWords: doc.count,
+    characterCount: doc.text.length,
+  };
+
+  report("done", 100, "Check complete", { completed: executed, total: planned });
+  return result;
 }

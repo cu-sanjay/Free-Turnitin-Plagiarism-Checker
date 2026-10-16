@@ -18,15 +18,17 @@ export default function AboutPage() {
         </p>
         <p>
           What you can still do on this page is a simpler check: your writing against public pages I can open. The
-          percentage only covers the passages I actually compared. It is not a Turnitin similarity index, and a low
-          score does not mean the work is original.
+          percentage is the share of your words that actually appear on those pages. It is not a Turnitin similarity
+          index, and a low score does not mean the work is original.
         </p>
         <p>
           I’m looking for a way to get you those free reports again. If that access comes back, I’ll put it here.
         </p>
         <p>
-          Your text is compared on this server with public pages. If you keep a result, it stays in this browser. I
-          don’t add a new analytics service.
+          Your text stays on this server for the check. I don’t add a new analytics service, and I don’t send the whole
+          document to anyone else. I do send short phrases from your text to public search engines (Bing, DuckDuckGo
+          when it answers, and Wikipedia search) so I can find pages to compare. If you keep a result, it stays in this
+          browser.
         </p>
         <p>
           <Link href="/tools">Other free checkers</Link>

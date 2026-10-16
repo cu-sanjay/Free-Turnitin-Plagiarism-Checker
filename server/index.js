@@ -24,8 +24,8 @@ app.use((req, res, next) => {
       if (capturedJsonResponse && typeof capturedJsonResponse === "object") {
         const summary = {
           error: capturedJsonResponse.error,
-          plagiarismPercentage: capturedJsonResponse.plagiarismPercentage,
-          passagesChecked: capturedJsonResponse.passagesChecked,
+          overallPercent: capturedJsonResponse.similarity?.overallPercent,
+          sources: capturedJsonResponse.sources?.length,
         };
         const compact = JSON.stringify(summary);
         if (compact !== "{}") logLine += ` :: ${compact}`;

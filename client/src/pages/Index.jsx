@@ -48,6 +48,7 @@ const Index = () => {
   const [isChecking, setIsChecking] = useState(false);
   const [progress, setProgress] = useState(null);
   const [result, setResult] = useState(null);
+  const [documentText, setDocumentText] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => () => {
@@ -81,6 +82,7 @@ const Index = () => {
     if (textareaRef.current) textareaRef.current.value = text;
     setError("");
     setResult(null);
+    setDocumentText("");
     refreshCounts();
   };
 
@@ -145,8 +147,15 @@ const Index = () => {
 
       if (streamError) throw new Error(streamError);
       if (!finalResult) throw new Error("The check ended before a report was ready.");
+      setDocumentText(text);
       setResult(finalResult);
-      setProgress({ percent: 100, phase: "done", message: "Check complete", completed: finalResult.passagesChecked, total: finalResult.passagesChecked });
+      setProgress({
+        percent: 100,
+        phase: "done",
+        message: "Check complete",
+        completed: finalResult.coverage?.queriesRun || 0,
+        total: finalResult.coverage?.queryBudget || 0,
+      });
       try {
         const store = createHistoryStore(window.localStorage);
         store.save(toHistoryRecord({ text, result: finalResult, excludeQuotes }));
@@ -175,6 +184,7 @@ const Index = () => {
     if (textareaRef.current) textareaRef.current.value = "";
     setCounts({ characters: 0, words: 0 });
     setResult(null);
+    setDocumentText("");
     setError("");
     setProgress(null);
     textareaRef.current?.focus();
@@ -278,6 +288,7 @@ const Index = () => {
               </div>
               <p className="status-line" aria-live="polite">
                 {progress.message} · {progress.percent}%
+                {Number.isFinite(progress.matchedPercent) ? ` · ${progress.matchedPercent}% matched so far` : ""}
               </p>
             </div>
           )}
@@ -288,13 +299,15 @@ const Index = () => {
           )}
           {!isChecking && !error && (
             <p className="callout meta">
-              Long documents stay in the editor and are compared as a spread of passages, so the page does not try to render every sentence at once.
+              I search with short phrases taken from your text, then open the public pages those searches return. The headline is the share of your words that actually appear on those pages.
             </p>
           )}
         </aside>
       </div>
 
-      {result && <ReportView result={result} onDownload={() => downloadReport(result)} />}
+      {result && (
+        <ReportView result={result} text={documentText} onDownload={() => downloadReport(result, documentText)} />
+      )}
     </div>
   );
 };

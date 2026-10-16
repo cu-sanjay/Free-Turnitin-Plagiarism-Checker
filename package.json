@@ -7,7 +7,7 @@
     "dev": "node server/index.js",
     "build": "vite build",
     "start": "NODE_ENV=production node server/index.js",
-    "test": "node --test server/plagiarism.test.js shared/pdf-report.test.js shared/history-store.test.js"
+    "test": "node --test server/plagiarism.test.js server/search.test.js shared/similarity.test.js shared/pdf-report.test.js shared/history-store.test.js"
   },
   "dependencies": {
     "@babel/core": "^7.28.5",

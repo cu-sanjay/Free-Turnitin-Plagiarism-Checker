@@ -2,41 +2,65 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildPlagiarismPdf } from "./pdf-report.js";
 
-test("pdf report is paginated and contains only supplied figures", () => {
-  const results = Array.from({ length: 18 }, (_, index) => ({
-    sentence: `Passage ${index + 1} discusses river stone glazes and kiln schedules in the studio notes.`,
-    similarity: index === 0 ? 82 : 4,
-    isPlagiarized: index === 0,
-    sources:
-      index === 0
-        ? [{ url: "https://example.test/source", similarity: 82, excerpt: "river stone glazes and kiln schedules" }]
-        : [],
-  }));
+function pdfText(bytes) {
+  return Array.from(bytes, (byte) => String.fromCharCode(byte)).join("");
+}
 
+test("pdf report is centred, paginated, and uses the overall similarity", () => {
+  const text = Array.from(
+    { length: 40 },
+    (_, index) => `Paragraph ${index + 1} discusses river stone glazes and kiln schedules in the studio notes.`
+  ).join("\n\n");
+  const copied = text.slice(0, 180);
   const pdf = buildPlagiarismPdf({
     checkedAt: "2026-10-14T12:00:00.000Z",
-    plagiarismPercentage: 6,
-    overallScore: 8,
-    totalWords: 2400,
-    characterCount: 14000,
-    passagesChecked: 18,
-    passagesInDocument: 120,
-    plagiarizedSentences: 1,
-    excludeQuotes: true,
-    coverageNote: "Compared 18 of 120 passages, spaced from the start, middle, and end.",
-    analysisSummary: "Scores cover 18 of 120 passages.",
-    sources: [{ url: "https://example.test/source", host: "example.test", maxSimilarity: 82, matchCount: 1 }],
-    results,
+    text,
+    summary: "31% of the document (80 of 260 words) matches 1 public source.",
+    similarity: {
+      overallPercent: 31.2,
+      matchedWords: 80,
+      countedWords: 260,
+      longestMatchWords: 42,
+      sourceCount: 1,
+    },
+    coverage: { segmentsSearched: 8, segmentsTotal: 12, queriesRun: 8 },
+    notes: [{ level: "info", text: "Searched 8 of 12 text segments with 8 search phrases." }],
+    sources: [
+      {
+        id: 1,
+        url: "https://example.test/source",
+        host: "example.test",
+        title: "Studio notes",
+        matchedWords: 80,
+        sharePercent: 31.2,
+      },
+    ],
+    spans: [{ start: 0, end: copied.length, words: 20, sourceId: 1 }],
   });
 
-  const text = Array.from(pdf, (byte) => String.fromCharCode(byte)).join("");
-  assert.match(text, /^%PDF-1\.4/);
-  assert.match(text, /%%EOF$/);
-  assert.equal((text.match(/\/Type \/Page /g) || []).length, (text.match(/\/Type \/Page /g) || []).length);
-  assert.ok((text.match(/\/Type \/Page /g) || []).length >= 2);
-  assert.match(text, /1 \/ \d+/);
-  assert.match(text, /Passages over 50% similarity: 6%/);
-  assert.match(text, /example\.test\/source/);
-  assert.doesNotMatch(text, /Turnitin similarity index/i);
-  assert.equal(text.includes("99%"), false);
+  const content = pdfText(pdf);
+  assert.match(content, /^%PDF-1\.4/);
+  assert.match(content, /%%EOF$/);
+  assert.ok((content.match(/\/Type \/Page /g) || []).length >= 2);
+  assert.match(content, /1 of /);
+  assert.match(content, /Overall similarity/);
+  assert.match(content, /31%/);
+  assert.match(content, /example\.test\/source/);
+  assert.match(content, /\[1\]/);
+  assert.doesNotMatch(content, /Passages over 50% similarity/);
+  assert.doesNotMatch(content, /Turnitin similarity index/i);
+  assert.equal(content.includes("99%"), false);
+});
+
+test("pdf says when a saved report cannot redraw highlights", () => {
+  const content = pdfText(
+    buildPlagiarismPdf({
+      text: "",
+      textStored: false,
+      similarity: { overallPercent: 12, matchedWords: 10, countedWords: 80 },
+      sources: [],
+      spans: [],
+    })
+  );
+  assert.match(content, /original document was not stored/);
 });

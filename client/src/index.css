@@ -424,6 +424,118 @@ button:disabled {
   margin-top: 1.4rem;
 }
 
+.report-shell {
+  margin-top: 1.6rem;
+  display: grid;
+  gap: 1rem;
+  scroll-margin-top: 4.5rem;
+}
+
+.report-hero .score-card {
+  margin-top: 0.9rem;
+}
+
+.report-summary {
+  margin: 0.9rem 0 0.2rem;
+  max-width: 42rem;
+  line-height: 1.5;
+}
+
+.report-download {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.note-stack {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0.7rem;
+}
+
+.report-body {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.source-panel,
+.document-panel {
+  min-width: 0;
+}
+
+.source-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.9rem;
+  background: hsl(var(--background));
+}
+
+.source-item[data-active="true"] {
+  box-shadow: inset 0 0 0 1px var(--hl);
+}
+
+.source-swatch {
+  min-width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.55rem;
+  border: 0;
+  background: var(--hl-soft);
+  color: var(--hl);
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: inset 0 -2px 0 var(--hl);
+}
+
+.doc-paper {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  max-height: min(78vh, 920px);
+  overflow: auto;
+  padding-right: 0.35rem;
+}
+
+.doc-paper p {
+  margin: 0 0 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.doc-blank {
+  height: 0.7rem;
+}
+
+.hl {
+  background: var(--hl-soft);
+  color: inherit;
+  border-radius: 0.12em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  box-shadow: inset 0 -0.12em 0 var(--hl);
+  padding: 0.05em 0.05em 0.12em;
+}
+
+.hl[data-dimmed="true"] {
+  opacity: 0.35;
+}
+
+.hl-mark {
+  margin-left: 0.15em;
+  font-size: 0.72em;
+  font-weight: 750;
+  color: var(--hl);
+  text-decoration: none;
+  vertical-align: super;
+  line-height: 1;
+}
+
+.history-card[data-active="true"] {
+  box-shadow: inset 0 0 0 1px hsl(var(--primary) / 0.45);
+}
+
 .score-value {
   font-size: clamp(3rem, 6vw, 4.4rem);
   line-height: 0.95;
@@ -612,6 +724,7 @@ button:disabled {
 
   .check-layout,
   .report-layout,
+  .report-body,
   .history-layout,
   .tool-grid {
     grid-template-columns: 1fr;

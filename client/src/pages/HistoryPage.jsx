@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { createHistoryStore, recordToResult } from "@shared/history-store.js";
+import { createHistoryStore, recordText, recordToResult } from "@shared/history-store.js";
+import { formatPercent } from "@shared/similarity.js";
 import ReportView from "@/components/ReportView";
 import { downloadReport } from "@/lib/download-report";
 
@@ -10,6 +11,10 @@ function getStore() {
   } catch {
     return null;
   }
+}
+
+function overallOf(entry) {
+  return entry?.similarity?.overallPercent ?? entry?.overallPercent ?? entry?.plagiarismPercentage ?? 0;
 }
 
 export default function HistoryPage() {
@@ -29,7 +34,8 @@ export default function HistoryPage() {
         <p className="kicker">On this device</p>
         <h1>History</h1>
         <p className="lede" style={{ maxWidth: "40rem", marginTop: "0.75rem" }}>
-          Finished checks stay in this browser only. The full document text is not stored, and nothing is synced to an account.
+          Finished checks stay in this browser only. When there is room I keep the document so you can reopen the
+          highlights. Nothing is synced to an account.
         </p>
       </header>
       {!entries.length ? (
@@ -53,14 +59,15 @@ export default function HistoryPage() {
               </button>
             </div>
             {entries.map((entry) => (
-              <article key={entry.id} className="history-card">
+              <article key={entry.id} className="history-card" data-active={entry.id === activeId ? "true" : "false"}>
                 <header>
-                  <h2 style={{ fontSize: "1.4rem" }}>{entry.plagiarismPercentage}%</h2>
+                  <h2 style={{ fontSize: "1.4rem" }}>{formatPercent(overallOf(entry))}</h2>
                   <span className="meta">{new Date(entry.createdAt).toLocaleString()}</span>
                 </header>
                 <p style={{ margin: "0.45rem 0" }}>{entry.preview || "Untitled check"}</p>
                 <p className="meta">
-                  {entry.wordCount} words · {entry.passagesChecked} passages compared
+                  {(entry.wordCount || 0).toLocaleString()} words · {(entry.sources || []).length} sources
+                  {entry.textStored === false ? " · highlights not stored" : ""}
                 </p>
                 <div className="row-between" style={{ marginTop: "0.6rem" }}>
                   <button type="button" className="secondary-button" onClick={() => setActiveId(entry.id)}>
@@ -82,7 +89,11 @@ export default function HistoryPage() {
           </div>
           <div>
             {active ? (
-              <ReportView result={recordToResult(active)} onDownload={() => downloadReport(recordToResult(active))} />
+              <ReportView
+                result={recordToResult(active)}
+                text={recordText(active)}
+                onDownload={() => downloadReport(recordToResult(active), recordText(active))}
+              />
             ) : (
               <p className="meta">Select a check to open its report.</p>
             )}

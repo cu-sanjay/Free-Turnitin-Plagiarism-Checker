@@ -1,8 +1,9 @@
->[!IMPORTANT]
-> The site is currently facing functional issues. If it is not working, it will be fixed soon.  
-> In the meantime, if you need a [Turnitin report PDF](https://www.turnitin.com/) for anything, you can reach out to me at **[NOT NOW]**.  
-> I will share the report PDF whenever I get free and see your request. Please wait patiently.  
-> ⭐ Don’t forget to star the repo and support the work!
+> [!IMPORTANT]
+> **Turnitin Endpoints:** The old turnitin endpoints no longer work, so this project can only check plagiarism against public web pages. Research papers and IEEE databases are no longer accessible.
+>
+> **My Turnitin Class:** My subscription has ended, so I can no longer provide free Turnitin report PDFs via mail. I am looking for a way to bring this back and will update the project if anything changes. Kindly avoid sending emails.
+>
+> Please check the **About** page for details and consider **[starring the repository](https://github.com/cu-sanjay/Free-Turnitin-Plagiarism-Checker)** to support the project.
 
 # **Turnitin Free Plagiarism Checker**
 

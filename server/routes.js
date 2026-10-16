@@ -44,10 +44,14 @@ export function registerRoutes(app) {
       console.log("Starting plagiarism check for text length:", text.length);
       const checkResult = await checkPlagiarism(text, { excludeQuotes });
       console.log(
-        "Plagiarism check complete. Passages:",
-        checkResult.passagesChecked,
-        "score:",
-        checkResult.plagiarismPercentage
+        "Plagiarism check complete. Overall:",
+        checkResult.similarity?.overallPercent,
+        "sources:",
+        checkResult.sources?.length,
+        "segments:",
+        checkResult.coverage?.segmentsSearched,
+        "/",
+        checkResult.coverage?.segmentsTotal
       );
       res.json(checkResult);
     } catch (error) {
